@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 
 // types
 import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
-import { Client } from '../shared/crm.model';
+import { Client, Course, CourseListResponse } from '../shared/crm.model';
 
 // data
 import { CLIENTS } from './data';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-crm-clients',
@@ -14,11 +15,29 @@ import { CLIENTS } from './data';
 })
 export class CRMClientsComponent implements OnInit {
 
+  selectedDetails: any = null;
+
+  openDetails(details: any): void {
+    if (details && details.length > 0) {
+      this.selectedDetails = details[0];
+    }
+  }
+  closeModal(): void {
+    this.selectedDetails = null;
+  }
+    
+
+  courses: Course[] = [];
+  apiUrl = 'https://lms.zaap.life/admin/course/list/1';
+  authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMSIsImlhdCI6MTczNzI4MzA5Nn0.OPDfT5xYyL09x2DYr2iVmldzHhq4OCsTm4RWE8wW12w';
+
+
+
   pageTitle: BreadcrumbItem[] = [];
-  clients: Client[] = [];
+ 
 
 
-  constructor () { }
+  constructor (private http: HttpClient) { }
 
   ngOnInit(): void {
     this.pageTitle = [{ label: 'CRM', path: '/' }, { label: 'Clients List', path: '/', active: true }];
@@ -28,7 +47,23 @@ export class CRMClientsComponent implements OnInit {
   /**
    * fetches order list
    */
-  _fetchData(): void {
-    this.clients = [...CLIENTS];
+  private _fetchData(): void {
+    const headers = new HttpHeaders({
+      Authorization: this.authToken,
+    });
+
+    this.http.get<CourseListResponse>(this.apiUrl, { headers }).subscribe(
+      (response) => {
+        if (response.success) {
+          this.courses = response.data.courses;
+          console.log('Courses loaded:', this.courses);
+        } else {
+          console.error('Failed to load courses:', response.message);
+        }
+      },
+      (error) => {
+        console.error('API error:', error);
+      }
+    );
   }
 }

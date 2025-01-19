@@ -44,6 +44,39 @@ export interface Client {
     date?: string;
 }
 
+export interface CourseDetails {
+    id: string;
+    video_url: string;
+    img: string;
+    name: string;
+    status: number;
+    createdAt: string;
+    course_id: string;
+  }
+  
+  export interface Course {
+    id: string;
+    name: string;
+    description: string;
+    img: string | null;
+    status: number;
+    createdAt: string;
+    updatedAt: string;
+    details: CourseDetails[];
+  }
+  
+  export interface CourseListResponse {
+    success: boolean;
+    message: string;
+    instance: string;
+    data: {
+      courses: Course[];
+      total_count: number;
+      limit: number;
+    };
+  }
+  
+
 export interface TeamMember {
     avatar: string;
     name: string;

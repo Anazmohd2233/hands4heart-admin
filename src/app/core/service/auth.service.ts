@@ -11,6 +11,8 @@ import { Observable } from 'rxjs';
 export class AuthenticationService {
     user: User | null = null;
 
+    private apiUrl = 'https://lms.zaap.life/admin/login';
+
     constructor (private http: HttpClient) {
     }
 
@@ -24,12 +26,24 @@ export class AuthenticationService {
         return this.user;
     }
 
-    /**
+ 
+    login(formData: FormData): Observable<any> {
+        return this.http.post(this.apiUrl, formData);
+      }
+
+
+
+
+
+
+         /**
      * Performs the login auth
      * @param email email of user
      * @param password password of user
      */
-    login(email: string, password: string): Observable<User> {
+
+
+    loginDefault(email: string, password: string): Observable<User> {
 
         return this.http.post<any>(`/api/login`, { email, password })
             .pipe(map(user => {

@@ -36,15 +36,15 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      email: ['hyper@coderthemes.com', [Validators.required, Validators.email]],
-      password: ['test', Validators.required]
+      email: ['super_admin', [Validators.required]],
+      password: ['admin@123', Validators.required]
     });
 
     // reset login status
     this.authenticationService.logout();
 
     // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   ngAfterViewInit(): void {
@@ -59,21 +59,53 @@ export class LoginComponent implements OnInit {
   /**
    * On submit form
    */
+  // onSubmit(): void {
+  //   this.formSubmitted = true;
+  //   if (this.loginForm.valid) {
+  //     this.loading = true;
+  //     this.authenticationService.loginDefault(this.formValues.email?.value, this.formValues.password?.value)
+  //       .pipe(first())
+  //       .subscribe(
+  //         (data: User) => {
+  //           this.router.navigate([this.returnUrl]);
+  //         },
+  //         (error: string) => {
+  //           this.error = error;
+  //           this.loading = false;
+  //         });
+  //   }
+  // }
   onSubmit(): void {
-    this.formSubmitted = true;
-    if (this.loginForm.valid) {
-      this.loading = true;
-      this.authenticationService.login(this.formValues.email?.value, this.formValues.password?.value)
-        .pipe(first())
-        .subscribe(
-          (data: User) => {
-            this.router.navigate([this.returnUrl]);
-          },
-          (error: string) => {
-            this.error = error;
-            this.loading = false;
-          });
-    }
+  this.formSubmitted = true;
+
+  if (this.loginForm.valid) {
+    this.loading = true;
+
+   
+    const formData = new FormData();
+    formData.append('username', this.formValues.email.value);
+    formData.append('password', this.formValues.password.value);
+
+
+    this.authenticationService.login(formData).subscribe(
+      (response: any) => {
+        if (response.success) {
+          console.log('response', response)
+          localStorage.setItem('Authorization', response.data.api_key);
+           this.router.navigate(['/dashboard/ecommerce']);
+          // this.router.navigate([this.returnUrl]);
+        } else {
+          this.error = response.message || 'Invalid login credentials.';
+        }
+        this.loading = false;
+      },
+      (err) => {
+        this.error = 'An error occurred. Please try again.';
+        this.loading = false;
+      }
+    );
   }
+}
+
 }
 

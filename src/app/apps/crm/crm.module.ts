@@ -27,6 +27,7 @@ import { MonthlyProgressComponent } from './management/monthly-progress/monthly-
 import { TaskStatusComponent } from './management/task-status/task-status.component';
 import { ProjectWidgetComponent } from './management/project-widget/project-widget.component';
 import { CalendarComponent } from './management/calendar/calendar.component';
+import { CourseDetailsModalComponent } from './clients/course-details-modal/course-details-modal.component';
 
 
 
@@ -50,7 +51,8 @@ import { CalendarComponent } from './management/calendar/calendar.component';
     MonthlyProgressComponent,
     TaskStatusComponent,
     ProjectWidgetComponent,
-    CalendarComponent
+    CalendarComponent,
+    CourseDetailsModalComponent
   ],
   imports: [
     CommonModule,
