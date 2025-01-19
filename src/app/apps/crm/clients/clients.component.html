@@ -43,14 +43,14 @@
                             <button
                             class="btn w-100 btn-light"
                             placement="top"
-                            (click)="openDetails(course.details)"
+                            (click)="openModal(course.details)"
                           >
                             <p class="mb-0 text-muted">Course details</p>
                           </button>
                           </div>
                           
                           <!-- Add modal component -->
-                          
+                           <!-- (click)="openDetails(course.details)" -->
                         
                           
                         <!-- <div class="col-4">
@@ -65,12 +65,6 @@
 
 
 </div>
-
-<app-course-details-modal
-                          *ngIf="selectedDetails"
-                          [courseDetails]="selectedDetails"
-                          (close)="closeModal()"
-                        ></app-course-details-modal>
 
 <div class="row py-4">
     <div class="col-12 text-center">
