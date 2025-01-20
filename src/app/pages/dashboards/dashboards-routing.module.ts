@@ -9,7 +9,7 @@ import { ProjectsComponent } from './projects/projects.component';
 
 const routes: Routes = [
   {
-    path: 'analytics',
+    path: 'analytics/:id"',
     component: AnalyticsComponent
   },
   {

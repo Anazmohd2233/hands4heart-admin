@@ -27,7 +27,7 @@ import { MonthlyProgressComponent } from './management/monthly-progress/monthly-
 import { TaskStatusComponent } from './management/task-status/task-status.component';
 import { ProjectWidgetComponent } from './management/project-widget/project-widget.component';
 import { CalendarComponent } from './management/calendar/calendar.component';
-import { ModalContentComponent } from './clients/modal-content/modal-content.component';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 
 
@@ -52,7 +52,6 @@ import { ModalContentComponent } from './clients/modal-content/modal-content.com
     TaskStatusComponent,
     ProjectWidgetComponent,
     CalendarComponent,
-    ModalContentComponent
   ],
   imports: [
     CommonModule,
@@ -69,7 +68,9 @@ import { ModalContentComponent } from './clients/modal-content/modal-content.com
     NgApexchartsModule,
     WidgetModule,
     PageTitleModule,
-    CrmRoutingModule
+    CrmRoutingModule,
+    NgxDropzoneModule,
+
   ]
 })
 export class CrmModule { }

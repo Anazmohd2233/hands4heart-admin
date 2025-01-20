@@ -4,8 +4,8 @@ import { MenuItem } from '../models/menu.model';
 export const MENU: MenuItem[] = [
     { key: 'navigation', label: 'Navigation', isTitle: true },
 
-    { key: 'courses', label: 'Course', isTitle: false, icon: 'uil-briefcase', link: 'apps/crm/clients' },
-    { key: 'banner', label: 'Banner', isTitle: false, icon: 'uil-copy-alt', link: '/apps/chat' },
+    { key: 'courses', label: 'Course', isTitle: false, icon: 'uil-briefcase', link: 'apps/courses' },
+    { key: 'banner', label: 'Banner', isTitle: false, icon: 'uil-copy-alt', link: 'apps/banner' },
 
     {
         key: 'dashboards', label: 'Dashboards', isTitle: false, icon: 'uil-home-alt', collapsed: true, badge: { variant: 'success', text: '4' },

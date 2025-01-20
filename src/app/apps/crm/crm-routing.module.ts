@@ -16,7 +16,7 @@ const routes: Routes = [
     component: CRMOrderListComponent
   },
   {
-    path: 'clients',
+    path: 'courses',
     component: CRMClientsComponent
   },
   {
