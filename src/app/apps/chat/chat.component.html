@@ -1,23 +1,68 @@
 <!-- page title -->
-<app-page-title [breadcrumbItems]="pageTitle" title="Chat"></app-page-title>
+<h4>Banners</h4>
 
-<div class="row">
-    <!-- chat users -->
-    <div class="col-xxl-3 col-xl-6 order-xl-1">
-        <app-chat-users (selectUser)="onSelectedUser($event)"></app-chat-users>
+<div class="col-xl-12">
+    <div class="text-xl-end mt-xl-0 mt-2">
+      <button
+        type="button"
+        class="btn btn-danger mb-2 me-2"
+        
+      >
+        Add New Banner
+      </button>
+      <!-- (click)="(addCourseModalopen)" -->
+      <!-- <button type="button" class="btn btn-light mb-2">Export</button> -->
     </div>
-    <!-- end col -->
+  </div>
+  <br>
+<div class="row"  >
+    <!-- Loop through course details -->
 
-    <!-- chat area -->
-    <div class="col-xxl-6 col-xl-12 order-xl-2">
-        <app-chat-area [selectedUser]="selectedUser"></app-chat-area>
+  <div class="col-lg-6" *ngFor="let banner of banners">
+  <div class="card">
+    <!-- Headline -->
+    <div class="row g-0 align-items-center justify-content-center text-center" style="padding-top: 4px;">
+      <h5 class="card-title" style="padding-top: 4px;">{{ banner?.headline }}</h5>
     </div>
-    <!-- end col -->
 
-    <!-- user profile -->
-    <div class="col-xxl-3 col-xl-6 order-xl-1 order-xxl-2">
-        <app-chat-profile [user]="selectedUser"></app-chat-profile>
+    <div class="row g-0 align-items-center">
+      <div class="col-md-12">
+        <div class="card-body">
+          <!-- Conditional Rendering Based on bannerType -->
+          <div class="ratio ratio-21x9" *ngIf="banner.bannerType === 'VIDEO'; else imageOrFallback">
+            <iframe 
+              [src]="getTrustedUrl(banner.videoUrl)" 
+              allowfullscreen>
+            </iframe>
+          </div>
+
+          <!-- Fallback for IMAGE or No Files -->
+          <ng-template #imageOrFallback>
+            <div *ngIf="banner.bannerType === 'IMAGE'; else noFiles">
+              <img 
+                [src]="banner.videoUrl" 
+                class="card-img-top" 
+                alt="Banner Image"
+                style="object-fit: cover; max-height: 200px; width: 100%;">
+            </div>
+            <ng-template #noFiles>
+              <p class="text-muted text-center">No files uploaded</p>
+            </ng-template>
+          </ng-template>
+
+          <!-- Created At -->
+          <p class="card-text">
+            <small class="text-muted">Created at {{ banner.createdAt | date: 'medium' }}</small>
+          </p>
+        </div> <!-- end card-body -->
+      </div> <!-- end col -->
+    </div> <!-- end row -->
+
+    <!-- Paragraph -->
+    <div class="row g-0 align-items-center justify-content-center text-center" style="padding-top: 4px;">
+      <p class="card-title" style="padding-top: 4px;">{{ banner?.paragraph }}</p>
     </div>
-    <!-- end col -->
+  </div> <!-- end card -->
+</div> <!-- end col -->
+
 </div>
-<!-- end row -->

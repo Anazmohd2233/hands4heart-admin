@@ -14,6 +14,7 @@ import { ChatComponent } from './chat.component';
 import { ChatUsersComponent } from './chat-users/chat-users.component';
 import { ChatAreaComponent } from './chat-area/chat-area.component';
 import { ChatProfileComponent } from './chat-profile/chat-profile.component';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 
@@ -32,7 +33,7 @@ import { ChatProfileComponent } from './chat-profile/chat-profile.component';
     SimplebarAngularModule,
     PageTitleModule,
     WidgetModule,
-    ChatRoutingModule
+    ChatRoutingModule,
   ]
 })
 export class ChatModule { }

@@ -2,7 +2,6 @@ import { Component, OnInit, TemplateRef } from "@angular/core";
 
 // types
 import { BreadcrumbItem } from "src/app/shared/page-title/page-title.model";
-import { Client, Course, CourseListResponse } from "../shared/crm.model";
 
 // data
 import { CLIENTS } from "./data";
@@ -12,6 +11,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DomSanitizer } from "@angular/platform-browser";
 import { Router } from "@angular/router";
 import { CourseService } from "../services/course.service";
+import { Course, CourseListResponse } from "../../chat/banner/banner.module";
 
 @Component({
   selector: "app-crm-clients",
@@ -23,14 +23,14 @@ export class CRMClientsComponent implements OnInit {
 
   courses: Course[] = [];
   apiUrl = "https://lms.zaap.life/admin/course/list/1";
-  authToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMSIsImlhdCI6MTczNzI4MzA5Nn0.OPDfT5xYyL09x2DYr2iVmldzHhq4OCsTm4RWE8wW12w";
-
+  
   pageTitle: BreadcrumbItem[] = [];
   // files: File[] = [];
   files: File | null = null; // Single file object
 
   docs: File | null = null;
+
+  authorization :any; 
 
   constructor(
     private http: HttpClient,
@@ -42,6 +42,8 @@ export class CRMClientsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.authorization = localStorage.getItem("Authorization");
+
     this.pageTitle = [
       { label: "CRM", path: "/" },
       { label: "Clients List", path: "/", active: true },
@@ -59,12 +61,13 @@ export class CRMClientsComponent implements OnInit {
     this.addObjective();
   }
 
+  
   /**
    * fetches order list
    */
   private _fetchData(): void {
     const headers = new HttpHeaders({
-      Authorization: this.authToken,
+      Authorization: this.authorization,
     });
 
     this.http.get<CourseListResponse>(this.apiUrl, { headers }).subscribe(
@@ -228,7 +231,7 @@ export class CRMClientsComponent implements OnInit {
     
     // this.router.navigate(['dashboard/analytics']);
     localStorage.setItem('courseId', course.id); // Save URLs only
-    this.router.navigate([`dashboard/analytics/${course.id}`]);
+    this.router.navigate([`courses/details/${course.id}`]);
   
   }
 

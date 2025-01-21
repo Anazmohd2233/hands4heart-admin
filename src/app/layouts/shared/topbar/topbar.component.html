@@ -45,7 +45,7 @@
                 </a>
                 <div ngbDropdownMenu aria-labelledby="languageDropdown"
                     class="dropdown-menu-animated topbar-dropdown-menu dropdown-menu-end">
-                    <!-- item -->
+              
                     <a ngbDropdownItem *ngFor="let language of languages;" href="javascript:void(0);"
                         class="notify-item" (click)="changeLanguage(language)">
                         <img [src]="language.flag" [alt]="language.name" class="me-1" height="12">

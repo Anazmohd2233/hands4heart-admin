@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbAlertModule, NgbDatepickerModule, NgbDropdownModule, NgbNavModule, NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { SimplebarAngularModule } from 'simplebar-angular';
@@ -23,6 +23,7 @@ import { WalletBalanceStatusComponent } from './e-wallet/wallet-balance-status/w
 import { WalletMoneyHistoryComponent } from './e-wallet/wallet-money-history/wallet-money-history.component';
 import { WalletMerchantsComponent } from './e-wallet/wallet-merchants/wallet-merchants.component';
 import { WalletTransactionListComponent } from './e-wallet/wallet-transaction-list/wallet-transaction-list.component';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 
 @NgModule({
@@ -54,6 +55,8 @@ import { WalletTransactionListComponent } from './e-wallet/wallet-transaction-li
     WidgetModule,
     PageTitleModule,
     DashboardRoutingModule,
+    NgxDropzoneModule,
+    ReactiveFormsModule
   ],
   exports: [
     EcommerceComponent,
