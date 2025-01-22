@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbDropdownModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { SimplebarAngularModule } from 'simplebar-angular';
 
@@ -15,6 +15,7 @@ import { ChatUsersComponent } from './chat-users/chat-users.component';
 import { ChatAreaComponent } from './chat-area/chat-area.component';
 import { ChatProfileComponent } from './chat-profile/chat-profile.component';
 import { DomSanitizer } from '@angular/platform-browser';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 
 
@@ -34,6 +35,8 @@ import { DomSanitizer } from '@angular/platform-browser';
     PageTitleModule,
     WidgetModule,
     ChatRoutingModule,
+    ReactiveFormsModule,
+    NgxDropzoneModule
   ]
 })
 export class ChatModule { }

@@ -23,14 +23,14 @@ export class CRMClientsComponent implements OnInit {
 
   courses: Course[] = [];
   apiUrl = "https://lms.zaap.life/admin/course/list/1";
-  
+
   pageTitle: BreadcrumbItem[] = [];
   // files: File[] = [];
   files: File | null = null; // Single file object
 
   docs: File | null = null;
 
-  authorization :any; 
+  authorization: any;
 
   constructor(
     private http: HttpClient,
@@ -38,8 +38,8 @@ export class CRMClientsComponent implements OnInit {
     private fb: FormBuilder,
     private sanitizer: DomSanitizer,
     private router: Router,
-    private courseService: CourseService,
-  ) { }
+    private courseService: CourseService
+  ) {}
 
   ngOnInit(): void {
     this.authorization = localStorage.getItem("Authorization");
@@ -55,13 +55,11 @@ export class CRMClientsComponent implements OnInit {
       description: ["", Validators.required],
       course_objective: this.fb.array([]), // FormArray for course objectives
       status: ["", Validators.required],
-
     });
 
     this.addObjective();
   }
 
-  
   /**
    * fetches order list
    */
@@ -94,18 +92,17 @@ export class CRMClientsComponent implements OnInit {
     this.modalService.open(content, { scrollable: true });
   }
 
-
   // Get the course_objective FormArray
   get courseObjectives(): FormArray {
-    return this.addCourseForm.get('course_objective') as FormArray;
+    return this.addCourseForm.get("course_objective") as FormArray;
   }
 
   // Add a new objective to the FormArray
   addObjective(): void {
     const objectiveGroup = this.fb.group({
-      id: ['100', Validators.required], // Default ID; can be dynamic
-      name: [''],
-      description: [''],
+      id: ["100", Validators.required], // Default ID; can be dynamic
+      name: [""],
+      description: [""],
     });
     this.courseObjectives.push(objectiveGroup);
   }
@@ -120,51 +117,52 @@ export class CRMClientsComponent implements OnInit {
       const formData = new FormData();
 
       // Add scalar values
-      formData.append('name', this.addCourseForm.value.name);
-      formData.append('description', this.addCourseForm.value.description);
-      formData.append('status', this.addCourseForm.value.status);
+      formData.append("name", this.addCourseForm.value.name);
+      formData.append("description", this.addCourseForm.value.description);
+      formData.append("status", this.addCourseForm.value.status);
 
       // Add course_objective as a stringified JSON
       formData.append(
-        'course_objective',
+        "course_objective",
         JSON.stringify(this.addCourseForm.value.course_objective)
       );
 
       if (this.files) {
-        formData.append('course_img', this.files);  // Single file for course image
+        formData.append("course_img", this.files); // Single file for course image
       }
 
       if (this.docs) {
-        formData.append('course_document', this.docs);  // Single file for course document
+        formData.append("course_document", this.docs); // Single file for course document
       }
       // Send POST request
       this.http
-        .post('https://lms.zaap.life/admin/course/create', formData, {
+        .post("https://lms.zaap.life/admin/course/create", formData, {
           headers: {
-            Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMSIsImlhdCI6MTczNzI4MzA5Nn0.OPDfT5xYyL09x2DYr2iVmldzHhq4OCsTm4RWE8wW12w',
+            Authorization:
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMSIsImlhdCI6MTczNzI4MzA5Nn0.OPDfT5xYyL09x2DYr2iVmldzHhq4OCsTm4RWE8wW12w",
           },
         })
         .subscribe((response) => {
-          console.log('Course created successfully', response);
+          console.log("Course created successfully", response);
           this.resetForm();
         });
     }
   }
   resetForm() {
     this.addCourseForm.reset({
-      name: '',
-      description: '',
+      name: "",
+      description: "",
       course_objective: [],
-      status: '',
+      status: "",
     });
     this.files = null;
     this.docs = null;
   }
 
   /**
- * adds new file in uploaded files
- * @param event event
- */
+   * adds new file in uploaded files
+   * @param event event
+   */
   // onSelectImage(event: any) {
   //   this.files.push(...event.addedFiles);
   // }
@@ -188,39 +186,40 @@ export class CRMClientsComponent implements OnInit {
   onRemoveFile(event: any) {
     // this.files.splice(this.files.indexOf(event), 1);
     this.files = null; // Clear the file
-
   }
   onRemoveDoc(event: any) {
     this.docs = null;
   }
 
   /**
-  * Formats the size
-  */
+   * Formats the size
+   */
   getSize(f: File) {
     const bytes = f.size;
     if (bytes === 0) {
-      return '0 Bytes';
+      return "0 Bytes";
     }
     const k = 1024;
     const dm = 2;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
 
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
   }
-
 
   /**
    * returns preview url of uploaded file
    */
   getPreviewUrlImg(f: File) {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(encodeURI(URL.createObjectURL(f)));
+    return this.sanitizer.bypassSecurityTrustResourceUrl(
+      encodeURI(URL.createObjectURL(f))
+    );
   }
 
   getPreviewUrlDoc(f: File) {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(encodeURI(URL.createObjectURL(f)));
+    return this.sanitizer.bypassSecurityTrustResourceUrl(
+      encodeURI(URL.createObjectURL(f))
+    );
   }
 
   // goToCourseDetails(course:any): void {
@@ -228,11 +227,8 @@ export class CRMClientsComponent implements OnInit {
   // }
 
   goToCourseDetails(course: any): void {
-    
     // this.router.navigate(['dashboard/analytics']);
-    localStorage.setItem('courseId', course.id); // Save URLs only
+    localStorage.setItem("courseId", course.id); // Save URLs only
     this.router.navigate([`courses/details/${course.id}`]);
-  
   }
-
 }

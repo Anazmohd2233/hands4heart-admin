@@ -27,7 +27,12 @@ import { CourseService } from "src/app/apps/crm/services/course.service";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Course, CourseDataById, CourseListResponse, CourseModalResponseById } from "src/app/apps/chat/banner/banner.module";
+import {
+  Course,
+  CourseDataById,
+  CourseListResponse,
+  CourseModalResponseById,
+} from "src/app/apps/chat/banner/banner.module";
 
 @Component({
   selector: "app-dashboard-analytics",
@@ -35,7 +40,6 @@ import { Course, CourseDataById, CourseListResponse, CourseModalResponseById } f
   styleUrls: ["./analytics.component.scss"],
 })
 export class AnalyticsComponent implements OnInit {
-
   addCourseDetailsForm!: FormGroup;
 
   courses: CourseDataById[] = [];
@@ -47,8 +51,7 @@ export class AnalyticsComponent implements OnInit {
   docs: File | null = null;
 
   courseId: string | null = null; // Class property to hold courseId
-  authorization :any; 
-
+  authorization: any;
 
   constructor(
     private courseService: CourseService,
@@ -70,16 +73,16 @@ export class AnalyticsComponent implements OnInit {
       status: ["", Validators.required],
     });
   }
-  fetchCourseDetails(courseId:any): void {
+  fetchCourseDetails(courseId: any): void {
     const apiUrl = `https://lms.zaap.life/admin/course/view?id=${courseId}`;
-    const token =this.authorization;
+    const token = this.authorization;
 
     this.http
       .get<CourseModalResponseById>(apiUrl, {
         headers: { Authorization: token },
       })
       .subscribe((response) => {
-        console.log('Course details:', response);
+        console.log("Course details:", response);
         this.course = response.data;
       });
   }
@@ -104,21 +107,19 @@ export class AnalyticsComponent implements OnInit {
     this.modalService.open(content, { scrollable: true });
   }
 
-
   resetForm() {
     this.addCourseDetailsForm.reset({
       name: "",
       video_url: "",
       status: "",
     });
-     this.files = null;
+    this.files = null;
   }
   onSelectImage(event: any): void {
     if (event.addedFiles && event.addedFiles.length > 0) {
       this.files = event.addedFiles[0]; // Store only the first selected file
     }
   }
-
 
   /**
    * removes file from uploaded files
@@ -159,33 +160,30 @@ export class AnalyticsComponent implements OnInit {
       const formData = new FormData();
 
       // Add scalar values
-      formData.append('name', this.addCourseDetailsForm.value.name);
-      formData.append('video_url', this.addCourseDetailsForm.value.video_url);
-      formData.append('status', this.addCourseDetailsForm.value.status);
+      formData.append("name", this.addCourseDetailsForm.value.name);
+      formData.append("video_url", this.addCourseDetailsForm.value.video_url);
+      formData.append("status", this.addCourseDetailsForm.value.status);
       if (this.courseId) {
         formData.append("course_id", this.courseId);
       }
 
       // Add course_objective as a stringified JSON
-  
-      if (this.files) {
-        formData.append('course_details_img', this.files);  // Single file for course image
-      }
 
+      if (this.files) {
+        formData.append("course_details_img", this.files); // Single file for course image
+      }
 
       // Send POST request
       this.http
-        .post('https://lms.zaap.life/admin/course/create_details', formData, {
+        .post("https://lms.zaap.life/admin/course/create_details", formData, {
           headers: {
             Authorization: this.authorization,
           },
         })
         .subscribe((response) => {
-          console.log('Course created successfully', response);
+          console.log("Course created successfully", response);
           this.resetForm();
         });
     }
   }
-
-
 }

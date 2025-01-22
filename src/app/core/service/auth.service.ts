@@ -5,13 +5,14 @@ import { map } from 'rxjs/operators';
 // types
 import { User } from '../models/auth.models';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
     user: User | null = null;
 
-    private apiUrl = 'https://lms.zaap.life/admin/login';
+    baseUrl = environment.baseUrl;
 
     constructor (private http: HttpClient) {
     }
@@ -28,7 +29,8 @@ export class AuthenticationService {
 
  
     login(formData: FormData): Observable<any> {
-        return this.http.post(this.apiUrl, formData);
+        const apiUrl = `${this.baseUrl}/admin/login`;
+        return this.http.post(apiUrl, formData);
       }
 
 

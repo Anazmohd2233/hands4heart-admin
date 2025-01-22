@@ -1,136 +1,133 @@
 <ng-template #addCourseModal let-modal>
-    <div class="modal-body">
-      <form
-        class="ps-3 pe-3"
-        [formGroup]="addCourseDetailsForm"
-        (ngSubmit)="createCourseDetails()"
-      >
-        <div class="mb-2">
-          <label for="username" class="form-label">Course Name</label>
-          <input
-            class="form-control"
-            type="email"
-            id="name"
-            required
-            formControlName="name"
-            placeholder="Course Name"
-          />
-        </div>
-  
-        <div class="mb-3">
-          <label for="username" class="form-label">Video link</label>
-          <input
-            class="form-control"
-            type="email"
-            id="link"
-            required
-            formControlName="video_url"
-            placeholder="Video link"
-          />
-        </div>
-  
-        <div class="mb-3">
-          <label class="form-label">Status</label>
-  
-          <select class="form-control" formControlName="status">
-            <option value="" disabled selected>Select Status</option>
-            <option value="true">Active</option>
-            <option value="false">Inactive</option>
-          </select>
-        </div>
-  
-        
-        <br /><br />
+  <div class="modal-body">
+    <form
+      class="ps-3 pe-3"
+      [formGroup]="addCourseDetailsForm"
+      (ngSubmit)="createCourseDetails()"
+    >
+      <div class="mb-2">
+        <label for="username" class="form-label">Course Name</label>
+        <input
+          class="form-control"
+          type="email"
+          id="name"
+          required
+          formControlName="name"
+          placeholder="Course Name"
+        />
+      </div>
 
+      <div class="mb-3">
+        <label for="username" class="form-label">Video link</label>
+        <input
+          class="form-control"
+          type="email"
+          id="link"
+          required
+          formControlName="video_url"
+          placeholder="Video link"
+        />
+      </div>
 
-        <div class="row">
-          <div class="col-12">
-            <div class="card">
-              <div class="card-body">
-                <h4 class="header-title m-t-0">Upload Couse Image</h4>
-  
-                <form #fileUpload="ngForm">
-                  <ngx-dropzone
+      <div class="mb-3">
+        <label class="form-label">Status</label>
+
+        <select class="form-control" formControlName="status">
+          <option value="" disabled selected>Select Status</option>
+          <option value="true">Active</option>
+          <option value="false">Inactive</option>
+        </select>
+      </div>
+
+      <br /><br />
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="header-title m-t-0">Upload Couse Image</h4>
+
+              <form #fileUpload="ngForm">
+                <ngx-dropzone
                   [multiple]="false"
-                    (change)="onSelectImage($event)"
-                    class="dropzone"
-                    accept="image/jpeg,image/jpg,image/png,image/gif"
-                  >
-                    <ngx-dropzone-label>
-                      <i class="h1 text-muted dripicons-cloud-upload"></i>
-                      <h3>Drop files here or click to upload.</h3>
-                    </ngx-dropzone-label>
-                  </ngx-dropzone>
-  
-                  <!-- Preview -->
-                  <div class="dropzone-previews mt-3" id="file-previews">
-                    <!-- file preview template -->
-                    <!-- <div id="uploadPreviewTemplate" *ngFor="let f of files"> -->
-                      <div id="uploadPreviewTemplate" *ngIf="files">
-  
-                      <div class="card mt-1 mb-0 shadow-none border">
-                        <div class="p-2">
-                          <div class="row align-items-center">
-                            <div class="col-auto">
-                              <img
-                                class="avatar-sm rounded bg-light"
-                                [alt]="files.name"
-                                [src]="getPreviewUrlImg(files)"
-                              />
-                            </div>
-                            <div class="col ps-0">
-                              <a
-                                href="javascript:void(0);"
-                                class="text-muted fw-bold"
-                                >{{ files.name }}</a
-                              >
-                              <p class="mb-0">{{ getSize(files) }}</p>
-                            </div>
-                            <div class="col-auto">
-                              <!-- Button -->
-                              <a
-                                href="javascript:void(0)"
-                                class="btn btn-link btn-lg text-muted"
-                                (click)="onRemoveFile($event)"
-                              >
-                                <i class="dripicons-cross"></i>
-                              </a>
-                            </div>
+                  (change)="onSelectImage($event)"
+                  class="dropzone"
+                  accept="image/jpeg,image/jpg,image/png,image/gif"
+                >
+                  <ngx-dropzone-label>
+                    <i class="h1 text-muted dripicons-cloud-upload"></i>
+                    <h3>Drop files here or click to upload.</h3>
+                  </ngx-dropzone-label>
+                </ngx-dropzone>
+
+                <!-- Preview -->
+                <div class="dropzone-previews mt-3" id="file-previews">
+                  <!-- file preview template -->
+                  <!-- <div id="uploadPreviewTemplate" *ngFor="let f of files"> -->
+                  <div id="uploadPreviewTemplate" *ngIf="files">
+                    <div class="card mt-1 mb-0 shadow-none border">
+                      <div class="p-2">
+                        <div class="row align-items-center">
+                          <div class="col-auto">
+                            <img
+                              class="avatar-sm rounded bg-light"
+                              [alt]="files.name"
+                              [src]="getPreviewUrlImg(files)"
+                            />
+                          </div>
+                          <div class="col ps-0">
+                            <a
+                              href="javascript:void(0);"
+                              class="text-muted fw-bold"
+                              >{{ files.name }}</a
+                            >
+                            <p class="mb-0">{{ getSize(files) }}</p>
+                          </div>
+                          <div class="col-auto">
+                            <!-- Button -->
+                            <a
+                              href="javascript:void(0)"
+                              class="btn btn-link btn-lg text-muted"
+                              (click)="onRemoveFile($event)"
+                            >
+                              <i class="dripicons-cross"></i>
+                            </a>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <!-- end file preview template -->
                   </div>
-                </form>
-              </div>
-              <!-- end card-body -->
+                  <!-- end file preview template -->
+                </div>
+              </form>
             </div>
-            <!-- end card-->
+            <!-- end card-body -->
           </div>
-          <!-- end col-->
+          <!-- end card-->
         </div>
-  
-  
-        <br /><br />
-  
-  
-        <div class="mb-3 text-center">
-          <button class="btn btn-primary" type="submit">Save Details</button>
-        </div>
-      </form>
-    </div>
-  </ng-template>
+        <!-- end col-->
+      </div>
 
+      <br /><br />
 
+      <div class="mb-3 text-center">
+        <button class="btn btn-primary" type="submit">Save Details</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
 
-  <br>
+<br />
 
-  
 <div class="row card-container">
   <!-- Image Column -->
   <div class="col-md-4 image-column">
-    <img [src]="course?.img || 'assets/images/other/upload_photo.jpg'" class="card-img" alt="Course Image" style="padding-top: 10px ; padding-bottom: 10px;">
+    <img
+      [src]="course?.img || 'assets/images/other/upload_photo.jpg'"
+      class="card-img"
+      alt="Course Image"
+      style="padding-top: 10px; padding-bottom: 10px"
+    />
   </div>
 
   <!-- Content Column -->
@@ -138,12 +135,15 @@
     <h5 class="card-title">{{ course?.name }}</h5>
     <p class="card-description">{{ course?.description }}</p>
   </div>
-  <div class="col-md-2 d-flex flex-column justify-content-end align-items-end" style="height: 1000%;">
+  <div
+    class="col-md-2 d-flex flex-column justify-content-end align-items-end"
+    style="height: 1000%"
+  >
     <button
       type="button"
       class="btn btn-danger mb-2 me-2"
       (click)="open(addCourseModal)"
-      style="margin-top: 10px;"
+      style="margin-top: 10px"
     >
       Add Course Details
     </button>
@@ -151,50 +151,60 @@
   </div>
 </div>
 
-<br>
+<br />
 
-<br>
-<div class="row"  >
-    <!-- Loop through course details -->
+<br />
+<div class="row">
+  <!-- Loop through course details -->
 
-    <div class="col-lg-6" *ngFor="let detail of course?.details"  >
-        <div class="card" >
-            <div class="row g-0 align-items-center justify-content-center text-center" style="padding-top: 4px;">
-                <h5 class="card-title" style="padding-top: 4px;">{{ detail.name }}</h5>
+  <div class="col-lg-6" *ngFor="let detail of course?.details">
+    <div class="card">
+      <div
+        class="row g-0 align-items-center justify-content-center text-center"
+        style="padding-top: 4px"
+      >
+        <h5 class="card-title" style="padding-top: 4px">{{ detail.name }}</h5>
+      </div>
+      <div class="row g-0 align-items-center">
+        <!-- Image Section -->
+        <div class="col-md-4">
+          <img
+            style="padding-left: 5px"
+            [src]="detail.img || 'assets/images/other/upload_photo.jpg'"
+            class="card-img"
+            alt="Detail Image"
+          />
+        </div>
+        <!-- Content Section -->
+        <div class="col-md-8">
+          <div class="card-body">
+            <!-- <h5 class="card-title">{{ detail.name }}</h5> -->
+            <div class="ratio ratio-21x9">
+              <!-- <iframe src="https://lms.zaap.life/img/test/banner/7f2356763cbb3b23e60e3db4b2529a31.mp4"></iframe> -->
+              <!-- <iframe [src]="getEmbedUrl(detail.video_url)" ></iframe> -->
+              <iframe
+                [src]="getTrustedUrl(detail.video_url)"
+                allowfullscreen
+              ></iframe>
             </div>
-                        <div class="row g-0 align-items-center" >
-                <!-- Image Section -->
-                <div class="col-md-4">
-                    <img style="padding-left: 5px;"
-                        [src]="detail.img || 'assets/images/other/upload_photo.jpg'" 
-                        class="card-img" 
-                        alt="Detail Image">
-                </div>
-                <!-- Content Section -->
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <!-- <h5 class="card-title">{{ detail.name }}</h5> -->
-                        <div class="ratio ratio-21x9">
-                  
-                            <!-- <iframe src="https://lms.zaap.life/img/test/banner/7f2356763cbb3b23e60e3db4b2529a31.mp4"></iframe> -->
-                            <!-- <iframe [src]="getEmbedUrl(detail.video_url)" ></iframe> -->
-                            <iframe [src]="getTrustedUrl(detail.video_url)" allowfullscreen></iframe>
-
-
-                        </div>
-                        <p class="card-text">
-                            <small class="text-muted">created at {{ detail.createdAt | date:'medium' }}</small>
-                        </p>
-                    </div> <!-- end card-body -->
-                </div> <!-- end col -->
-            </div> <!-- end row-->
-            
-        </div> <!-- end card -->
-    </div> <!-- end col -->
+            <p class="card-text">
+              <small class="text-muted"
+                >created at {{ detail.createdAt | date : "medium" }}</small
+              >
+            </p>
+          </div>
+          <!-- end card-body -->
+        </div>
+        <!-- end col -->
+      </div>
+      <!-- end row-->
+    </div>
+    <!-- end card -->
+  </div>
+  <!-- end col -->
 </div>
 
 <!-- <h3 class="card-title">Course Details</h3> -->
-
 
 <!-- <div class="text-center" *ngIf="!course?.details ">
     <p>No course details found.</p>
@@ -205,4 +215,3 @@
         <p>No course details found.</p>
     </div>
 </ng-template> -->
-

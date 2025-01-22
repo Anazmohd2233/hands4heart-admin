@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from "@angular/core";
 
 // type
-import { BreadcrumbItem } from '../../shared/page-title/page-title.model';
-import { ChatUser } from './shared/chat.model';
+import { BreadcrumbItem } from "../../shared/page-title/page-title.model";
+import { ChatUser } from "./shared/chat.model";
 
 // data
-import { USERS } from './shared/data';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Banner, BannerListResponse } from './banner/banner.module';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { USERS } from "./shared/data";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Banner, BannerListResponse } from "./banner/banner.module";
+import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 @Component({
-  selector: 'app-chat',
-  templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss']
+  selector: "app-chat",
+  templateUrl: "./chat.component.html",
+  styleUrls: ["./chat.component.scss"],
 })
 export class ChatComponent implements OnInit {
   banners: Banner[] = [];
@@ -21,25 +23,39 @@ export class ChatComponent implements OnInit {
   pageTitle: BreadcrumbItem[] = [];
 
   apiUrl = "https://lms.zaap.life/admin/banner/list/1";
-  authorization :any; 
+  authorization: any;
 
+  courseId: string | null = null; // Class property to hold courseId
 
+  files: File | null = null; // Single file object
 
-  constructor (
+  addBannerForm!: FormGroup;
+
+  constructor(
     private http: HttpClient,
-        private sanitizer: DomSanitizer,
-    
-  ) { }
+    private sanitizer: DomSanitizer,
+    private modalService: NgbModal,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
-    this.pageTitle = [{ label: 'Apps', path: '/' }, { label: 'Chat', path: '/', active: true }];
+    this.pageTitle = [
+      { label: "Apps", path: "/" },
+      { label: "Chat", path: "/", active: true },
+    ];
+
+    this.courseId = localStorage.getItem("courseId");
 
     this.authorization = localStorage.getItem("Authorization");
 
     this._fetchData();
 
-    // set initial user
-   
+    this.addBannerForm = this.fb.group({
+      headline: ["", Validators.required],
+      paragraph: ["", Validators.required],
+      status: ["", Validators.required],
+      bannerType: ["", Validators.required],
+    });
   }
 
   private _fetchData(): void {
@@ -77,5 +93,77 @@ export class ChatComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
+  open(content: TemplateRef<NgbModal>): void {
+    this.modalService.open(content, { scrollable: true });
+  }
+  onRemoveFile(event: any) {
+    // this.files.splice(this.files.indexOf(event), 1);
+    this.files = null; // Clear the file
+  }
+  onSelectImage(event: any): void {
+    if (event.addedFiles && event.addedFiles.length > 0) {
+      this.files = event.addedFiles[0]; // Store only the first selected file
+    }
+  }
 
+  resetForm() {
+    this.addBannerForm.reset({
+      headline: "",
+      paragraph: "",
+      status: "",
+      bannerType: "",
+    });
+    this.files = null;
+  }
+  getSize(f: File) {
+    const bytes = f.size;
+    if (bytes === 0) {
+      return "0 Bytes";
+    }
+    const k = 1024;
+    const dm = 2;
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+  }
+
+  /**
+   * returns preview url of uploaded file
+   */
+  getPreviewUrlImg(f: File) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(
+      encodeURI(URL.createObjectURL(f))
+    );
+  }
+
+  createBanner(): void {
+    if (this.addBannerForm.valid) {
+      const formData = new FormData();
+
+      // Add scalar values
+      formData.append("headline", this.addBannerForm.value.headline);
+      formData.append("paragraph", this.addBannerForm.value.paragraph);
+      formData.append("status", this.addBannerForm.value.status);
+      formData.append("bannerType", this.addBannerForm.value.bannerType);
+    
+      // Add course_objective as a stringified JSON
+
+      if (this.files) {
+        formData.append("img", this.files); // Single file for course image
+      }
+
+      // Send POST request
+      this.http
+        .post("https://lms.zaap.life/admin/banner/create", formData, {
+          headers: {
+            Authorization: this.authorization,
+          },
+        })
+        .subscribe((response) => {
+          console.log("Banner Added successfully", response);
+          this.resetForm();
+        });
+    }
+  }
 }
