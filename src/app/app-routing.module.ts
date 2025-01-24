@@ -14,7 +14,7 @@ import { MaintenanceComponent } from './pages/custom-pages/others/maintenance/ma
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard/ecommerce',
+    redirectTo: 'account/login',
     pathMatch: 'full'
   },
   {
