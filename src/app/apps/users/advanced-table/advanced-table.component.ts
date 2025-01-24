@@ -2,6 +2,9 @@ import { AfterViewChecked, Component, ComponentFactoryResolver, EventEmitter, In
 import { DomSanitizer } from '@angular/platform-browser';
 import { AdvancedTableServices } from './advanced-table-service.service';
 import { NgbSortableHeaderDirective, SortEvent } from './sortable.directive';
+import { Router } from '@angular/router';
+import { EnrolledCourse } from '../models/mode-user-courses';
+import { UserProfileService } from 'src/app/core/service/user.service';
 
 
 export interface Column {
@@ -15,7 +18,7 @@ export interface Column {
 
 
 @Component({
-  selector: 'app-advanced-table',
+  selector: 'app-advanced-table-users',
   templateUrl: './advanced-table.component.html',
   styleUrls: ['./advanced-table.component.scss'],
   providers: [AdvancedTableServices]
@@ -45,8 +48,13 @@ export class AdvancedTableComponent implements OnInit, AfterViewChecked {
   @ViewChildren(NgbSortableHeaderDirective) headers!: QueryList<NgbSortableHeaderDirective>;
   @ViewChildren('advancedTable') advancedTable!: any;
 
-  constructor (public service: AdvancedTableServices, private sanitizer: DomSanitizer, private componentFactoryResolver: ComponentFactoryResolver) {
-  }
+  constructor (
+    public service: AdvancedTableServices, 
+    private sanitizer: DomSanitizer, 
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private router: Router,
+    private userService: UserProfileService,
+  ) {}
 
   ngAfterViewChecked(): void {
     this.handleTableLoad.emit();
@@ -160,7 +168,49 @@ export class AdvancedTableComponent implements OnInit, AfterViewChecked {
   }
 
 
+  openCourses(record: any): void {
+    console.log('Open courses for:', record);
+    localStorage.setItem("userId_course", record.id); // Save URLs only
 
+    this.router.navigate([`apps/user-courses`]);
+    // Add your logic here to open the Courses page/modal for the selected user.
+  }
+
+  updatePaymentStatus(record: EnrolledCourse, status: string): void {
+    console.log(`Updating payment status for ${record.user_name}:`, status);
+
+    const formData = new FormData();
+    formData.append("enroll_id", record.id);
+    formData.append("payment_type", status);
+  
+    // Perform additional logic, e.g., API call to update the backend
+    this._fetchData(formData);
+  }
+  
+  _fetchData(formData:any): void {
+    // this.records = tableData;
+
+
+    this.userService.updatePaymentStatus(formData).subscribe({
+      next: (response) => 
+        {console.log('response of user list - ',response)
+        if (response) {
+          console.log('succcessssssssssssssssssssssss')
+        } else {
+          console.error('Failed to fetch data:');
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching admin list:', error);
+      },
+      complete: () => {
+        // Optionally handle the completion logic here
+        console.log('Admin list fetch completed.');
+      }
+    });
+    
+  }
+  
 
 }
 

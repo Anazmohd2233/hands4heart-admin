@@ -12,18 +12,24 @@ export class AuthGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const currentUser = this.authenticationService.currentUser();
-        if (currentUser) {
-            return true;
-        }else{
-            return true;
 
+        const api=localStorage.getItem('Authorization')
+        if (api) {
+            console.log("found token ::::::::::::::::::::::::::: true")
+            return true;
         }
+        // else{
+        //     console.log("found token ::::::::::::::::::::::::::: false")
+
+        //     return true;
+
+        // }
 
         // not logged in so redirect to login page with the return url
 
         // this.router.navigate(['account/login'], { queryParams: { returnUrl: state.url } });
-        //  this.router.navigate(['account/login']);
+          this.router.navigate(['account/login']);
 
-        // return false;
+         return false;
     }
 }

@@ -1,12 +1,14 @@
 import { Component, ComponentFactoryResolver, EventEmitter, Input, OnInit, Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { AdvancedTable } from 'src/app/pages/tables/advanced/advanced.model';
-import { AdvancedTableServices } from 'src/app/shared/advanced-table/advanced-table-service.service';
-import { Column } from 'src/app/shared/advanced-table/advanced-table.component';
-import { NgbSortableHeaderDirective, SortEvent } from 'src/app/shared/advanced-table/sortable.directive';
-import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
+
 
 import { tableData } from './data';
+import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
+import { AdvancedTable } from './advanced.model';
+import { Column } from '../advanced-table/advanced-table.component';
+import { SortEvent } from '../advanced-table/sortable.directive';
+import { UserProfileService } from 'src/app/core/service/user.service';
+import { Admin } from '../models/model';
 
 @Component({
   selector: 'app-user-list',
@@ -16,15 +18,87 @@ import { tableData } from './data';
 export class UserListComponent implements OnInit {
 
   pageTitle: BreadcrumbItem[] = [];
-  records: AdvancedTable[] = [];
+   records: Admin[] = [];
   columns: Column[] = [];
   pageSizeOptions: number[] = [10, 25, 50, 100];
 
-  constructor () { }
+   adminList: Admin[] = [];
 
+  //  records: Admin[] = [
+  //   {
+  //     id: '1',
+  //     name: 'John Doe',
+  //     phone: '123-456-7890',
+  //     status: 1,
+  //     email: 'john.doe@example.com',
+  //     is_skilled_user: 1,
+  //     address: '123 Main Street, City, Country',
+  //     gender: 'Male',
+  //     ratings: 4.5,
+  //     language: 'English',
+  //     date_of_birth: '1985-06-15',
+  //     bio: 'Experienced professional with over 10 years in tech.',
+  //     createdAt: '2024-01-01T10:00:00Z',
+  //     updatedAt: '2024-01-20T12:30:00Z',
+  //   },
+  //   {
+  //     id: '2',
+  //     name: 'Jane Smith',
+  //     phone: '987-654-3210',
+  //     status: 0,
+  //     email: 'jane.smith@example.com',
+  //     is_skilled_user: 0,
+  //     address: '456 Oak Road, Village, Country',
+  //     gender: 'Female',
+  //     ratings: 3.8,
+  //     language: 'Spanish',
+  //     date_of_birth: '1990-04-22',
+  //     bio: 'Junior developer passionate about learning and growing.',
+  //     createdAt: '2024-01-05T11:15:00Z',
+  //     updatedAt: '2024-01-22T09:45:00Z',
+  //   },
+  //   {
+  //     id: '3',
+  //     name: 'Sam Wilson',
+  //     phone: '555-123-4567',
+  //     status: 1,
+  //     email: 'sam.wilson@example.com',
+  //     is_skilled_user: 1,
+  //     address: '789 Pine Avenue, Town, Country',
+  //     gender: 'Male',
+  //     ratings: 4.8,
+  //     language: 'English, French',
+  //     date_of_birth: '1992-11-10',
+  //     bio: 'Full-stack developer with a passion for clean code and efficient solutions.',
+  //     createdAt: '2024-01-10T14:20:00Z',
+  //     updatedAt: '2024-01-21T10:50:00Z',
+  //   },
+  //   {
+  //     id: '4',
+  //     name: 'Emily Davis',
+  //     phone: '321-654-9870',
+  //     status: 1,
+  //     email: 'emily.davis@example.com',
+  //     is_skilled_user: 1,
+  //     address: '101 Maple Lane, City, Country',
+  //     gender: 'Female',
+  //     ratings: 4.2,
+  //     language: 'German',
+  //     date_of_birth: '1988-12-05',
+  //     bio: 'Project manager with experience in software development and team leadership.',
+  //     createdAt: '2024-01-15T08:30:00Z',
+  //     updatedAt: '2024-01-19T16:00:00Z',
+  //   }
+  // ];
+  
+  totalCount: number = 0;
+  limit: number = 0;
+
+  constructor(private userService: UserProfileService) {}
+  
   ngOnInit(): void {
     this.pageTitle = [{ label: 'Tables', path: '/' }, { label: 'Advanced Tables', path: '/', active: true }];
-    this._fetchData();
+     this._fetchData();
     this.initTableCofig();
   }
 
@@ -32,7 +106,31 @@ export class UserListComponent implements OnInit {
    * fetches table records
    */
   _fetchData(): void {
-    this.records = tableData;
+    // this.records = tableData;
+
+
+    this.userService.getUserList(1).subscribe({
+      next: (response) => 
+        {console.log('response of user list - ',response)
+        if (response.success) {
+          this.adminList = response.data.admin_list;
+          this.records = this.adminList;
+          this.totalCount = response.data.total_count;
+          this.limit = response.data.limit;
+          console.log('Admins:', this.adminList);
+        } else {
+          console.error('Failed to fetch data:', response.message);
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching admin list:', error);
+      },
+      complete: () => {
+        // Optionally handle the completion logic here
+        console.log('Admin list fetch completed.');
+      }
+    });
+    
   }
 
   /**
@@ -43,38 +141,48 @@ export class UserListComponent implements OnInit {
       {
         name: 'name',
         label: 'Name',
-        formatter: (record: AdvancedTable) => record.name,
+        formatter: (record: Admin) => record.name,
         width: 245,
       },
       {
-        name: 'position',
-        label: 'Position',
-        formatter: (record: AdvancedTable) => record.position,
-        width: 360,
+        name: 'phone',
+        label: 'Phone',
+        formatter: (record: Admin) => record.phone,
+        width: 250,
       },
       {
-        name: 'office',
-        label: 'Office',
-        formatter: (record: AdvancedTable) => record.office,
-        width: 180
+        name: 'email',
+        label: 'Email',
+        formatter: (record: Admin) => record.email,
+        width: 250
       },
       {
-        name: 'age',
-        label: 'Age',
-        formatter: (record: AdvancedTable) => record.age,
+        name: 'gender',
+        label: 'Gender',
+        formatter: (record: Admin) => record.gender,
       },
       {
-        name: 'date',
-        label: 'Date',
-        formatter: (record: AdvancedTable) => record.date,
-      },
-      {
-        name: 'salary',
-        label: 'Salary',
-        formatter: (record: AdvancedTable) => record.salary,
+        name: 'action',
+        label: 'Action',
+        formatter: () => '',       },
+     
+      // {
+      //   name: 'date',
+      //   label: 'Date',
+      //   formatter: (record: AdvancedTable) => record.date,
+      // },
+      // {
+      //   name: 'salary',
+      //   label: 'Salary',
+      //   formatter: (record: AdvancedTable) => record.salary,
 
-      }
+      // }
     ];
+  }
+
+  openCourses(record: Admin) {
+    console.log('Courses for', record);
+    // Your logic here
   }
 
   // compares two cell values
@@ -88,7 +196,7 @@ export class UserListComponent implements OnInit {
    */
   onSort(event: SortEvent): void {
     if (event.direction === '') {
-      this.records = tableData;
+      this.records = this.adminList;
     } else {
       this.records = [...this.records].sort((a, b) => {
         const res = this.compare(a[event.column], b[event.column]);
@@ -102,13 +210,13 @@ export class UserListComponent implements OnInit {
  * @param tables Table field value fetch
  * @param term Search the value
  */
-  matches(tables: AdvancedTable, term: string) {
+  matches(tables: Admin, term: string) {
     return tables.name.toLowerCase().includes(term)
-      || tables.position.toLowerCase().includes(term)
-      || tables.office.toLowerCase().includes(term)
-      || String(tables.age).includes(term)
-      || tables.date.toLowerCase().includes(term)
-      || tables.salary.toLowerCase().includes(term);
+      || tables.phone.toLowerCase().includes(term)
+      || tables.email.toLowerCase().includes(term)
+      || String(tables.gender).includes(term)
+      // || tables.date.toLowerCase().includes(term)
+      // || tables.salary.toLowerCase().includes(term);
   }
 
   /**
@@ -119,7 +227,7 @@ export class UserListComponent implements OnInit {
       this._fetchData();
     }
     else {
-      let updatedData = tableData;
+      let updatedData = this.adminList;
 
       //  filter
       updatedData = updatedData.filter(record => this.matches(record, searchTerm));

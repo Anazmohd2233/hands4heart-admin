@@ -64,7 +64,26 @@
                     </div>
                 </td>
                 <td *ngFor="let column of columns">
-                    <div [innerHtml]="callFormatter(column,record)"></div>
+                    <!-- <div [innerHtml]="callFormatter(column,record)"></div> -->
+
+                    <ng-container *ngIf="column.name !== 'action'">
+                        <div [innerHtml]="callFormatter(column,record)"></div>
+                      </ng-container>
+                      <ng-container *ngIf="column.name === 'action'">
+                        <button (click)="openCourses(record)" class="btn btn-primary">Courses Enrolled</button>
+                      </ng-container>
+                      <ng-container *ngIf="column.name === 'change'">
+                        <select
+                          class="form-control custom-select"
+                          [(ngModel)]="record.paymentStatus"
+                          (change)="updatePaymentStatus(record, record.paymentStatus)"
+                        >
+                          <!-- <option value="" disabled>Select Status</option> -->
+                          <option value="paid">Paid</option>
+                          <option value="unpaid">Unpaid</option>
+                        </select>
+                      </ng-container>
+                   
                 </td>
             </tr>
         </tbody>
