@@ -10,7 +10,8 @@ const routes: Routes = [
   { path: 'email', loadChildren: () => import('./email/email.module').then(m => m.EmailModule) },
   { path: 'projects', loadChildren: () => import('./project/project.module').then(m => m.ProjectModule) },
   { path: 'tasks', loadChildren: () => import('./tasks/tasks.module').then(m => m.TasksModule) },
-  { path: '', loadChildren: () => import('./crm/crm.module').then(m => m.CrmModule) }
+  { path: '', loadChildren: () => import('./crm/crm.module').then(m => m.CrmModule) },
+  { path: '', loadChildren: () => import('./users/users.module').then(m => m.UsersModule) }
 ];
 
 @NgModule({
