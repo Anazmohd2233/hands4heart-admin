@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 // types
 import { User } from '../models/auth.models';
@@ -28,12 +28,22 @@ export class AuthenticationService {
     }
 
  
+    // login(formData: FormData): Observable<any> {
+    //     const apiUrl = `${this.baseUrl}/admin/login`;
+    //     return this.http.post(apiUrl, formData);
+    //   }
+
     login(formData: FormData): Observable<any> {
         const apiUrl = `${this.baseUrl}/admin/login`;
-        return this.http.post(apiUrl, formData);
+        return this.http.post(apiUrl, formData).pipe(
+          tap((response: any) => {
+            if (response.success) {
+              // Store the authentication token in local storage
+              localStorage.setItem('Authorization', response.data.api_key);
+            }
+          })
+        );
       }
-
-
 
 
 

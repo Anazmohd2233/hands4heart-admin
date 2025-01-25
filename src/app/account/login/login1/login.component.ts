@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
       (response: any) => {
         if (response.success) {
           console.log('response', response)
-          localStorage.setItem('Authorization', response.data.api_key);
+          // localStorage.setItem('Authorization', response.data.api_key);
            this.router.navigate(['apps/user-list']);
           // this.router.navigate([this.returnUrl]);
         } else {
