@@ -7,7 +7,6 @@ import { Select2Module } from 'ng-select2-component';
 import { SimplebarAngularModule } from 'simplebar-angular';
 import { PageTitleModule } from 'src/app/shared/page-title/page-title.module';
 import { WidgetModule } from 'src/app/shared/widget/widget.module';
-import { CRMClientsComponent } from './clients/clients.component';
 import { CrmRoutingModule } from './crm-routing.module';
 import { CRMDashboardComponent } from './dashboard/dashboard.component';
 import { CRMManagementComponent } from './management/management.component';
@@ -28,6 +27,7 @@ import { TaskStatusComponent } from './management/task-status/task-status.compon
 import { ProjectWidgetComponent } from './management/project-widget/project-widget.component';
 import { CalendarComponent } from './management/calendar/calendar.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { CRMClientsComponent } from './courses/clients.component';
 
 
 

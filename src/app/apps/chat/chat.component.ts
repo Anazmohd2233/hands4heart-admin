@@ -31,6 +31,9 @@ export class ChatComponent implements OnInit {
 
   addBannerForm!: FormGroup;
 
+  editBannerForm!: FormGroup;
+
+
   constructor(
     private http: HttpClient,
     private sanitizer: DomSanitizer,
@@ -56,6 +59,7 @@ export class ChatComponent implements OnInit {
       status: ["", Validators.required],
       bannerType: ["", Validators.required],
     });
+
   }
 
   private _fetchData(): void {
@@ -94,6 +98,19 @@ export class ChatComponent implements OnInit {
   }
 
   open(content: TemplateRef<NgbModal>): void {
+    this.modalService.open(content, { scrollable: true });
+  }
+
+  openEdit(content: TemplateRef<NgbModal>, banner:Banner): void {
+
+    console.log('banner::::::::::::::::::::::',banner)
+
+    this.editBannerForm = this.fb.group({
+      headline: [banner.headline, Validators.required],
+      paragraph: [banner.paragraph, Validators.required],
+      status: [banner.status, Validators.required],
+      bannerType: [banner.bannerType, Validators.required],
+    });
     this.modalService.open(content, { scrollable: true });
   }
   onRemoveFile(event: any) {

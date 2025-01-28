@@ -30,6 +30,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import {
   Course,
   CourseDataById,
+  CourseDetailById,
   CourseListResponse,
   CourseModalResponseById,
 } from "src/app/apps/chat/banner/banner.module";
@@ -41,6 +42,8 @@ import {
 })
 export class AnalyticsComponent implements OnInit {
   addCourseDetailsForm!: FormGroup;
+  editCourseForm!: FormGroup;
+
 
   courses: CourseDataById[] = [];
 
@@ -72,7 +75,37 @@ export class AnalyticsComponent implements OnInit {
       video_url: ["", Validators.required],
       status: ["", Validators.required],
     });
+
+    this.editCourseForm = this.fb.group({
+      name: ["", Validators.required],
+      description: ["", Validators.required],
+      course_objective: this.fb.array([]), // FormArray for course objectives
+      status: ["", Validators.required],
+    });
+
+    this.addObjective();
   }
+
+  // Get the course_objective FormArray
+  get courseObjectives(): FormArray {
+    return this.editCourseForm.get("course_objective") as FormArray;
+  }
+
+  // Add a new objective to the FormArray
+  addObjective(): void {
+    const objectiveGroup = this.fb.group({
+      id: ["100", Validators.required], // Default ID; can be dynamic
+      name: [""],
+      description: [""],
+    });
+    this.courseObjectives.push(objectiveGroup);
+  }
+
+  // Remove an objective from the FormArray
+  removeObjective(index: number): void {
+    this.courseObjectives.removeAt(index);
+  }
+
   fetchCourseDetails(courseId: any): void {
     const apiUrl = `https://lms.zaap.life/admin/course/view?id=${courseId}`;
     const token = this.authorization;
@@ -103,9 +136,19 @@ export class AnalyticsComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-  open(content: TemplateRef<NgbModal>): void {
+  openEditCourse(content: TemplateRef<NgbModal> , courseData: CourseDataById): void {
     this.modalService.open(content, { scrollable: true });
   }
+
+  openEditDetails(content: TemplateRef<NgbModal> , details: CourseDetailById): void {
+    this.modalService.open(content, { scrollable: true });
+  }
+
+  
+  openAddDetails(content: TemplateRef<NgbModal>): void {
+    this.modalService.open(content, { scrollable: true });
+  }
+
 
   resetForm() {
     this.addCourseDetailsForm.reset({
@@ -121,6 +164,11 @@ export class AnalyticsComponent implements OnInit {
     }
   }
 
+  onSelectDoc(event: any) {
+    if (event.addedFiles && event.addedFiles.length > 0) {
+      this.docs = event.addedFiles[0]; // Store only the first selected file
+    }
+  }
   /**
    * removes file from uploaded files
    * @param event event
@@ -128,6 +176,10 @@ export class AnalyticsComponent implements OnInit {
   onRemoveFile(event: any) {
     // this.files.splice(this.files.indexOf(event), 1);
     this.files = null; // Clear the file
+  }
+
+  onRemoveDoc(event: any) {
+    this.docs = null;
   }
 
   /**
@@ -150,6 +202,12 @@ export class AnalyticsComponent implements OnInit {
    * returns preview url of uploaded file
    */
   getPreviewUrlImg(f: File) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(
+      encodeURI(URL.createObjectURL(f))
+    );
+  }
+
+  getPreviewUrlDoc(f: File) {
     return this.sanitizer.bypassSecurityTrustResourceUrl(
       encodeURI(URL.createObjectURL(f))
     );
@@ -185,5 +243,9 @@ export class AnalyticsComponent implements OnInit {
           this.resetForm();
         });
     }
+  }
+
+  onSubmitEditCourse():void{
+    console.log('on submit edit course')
   }
 }

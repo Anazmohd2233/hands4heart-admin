@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 // types
 import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
-import { Client } from '../shared/crm.model';
 
 // data
 import { CLIENTS } from './data';
+import { Client } from '../../crm/shared/crm.model';
 
 @Component({
   selector: 'app-crm-clients',

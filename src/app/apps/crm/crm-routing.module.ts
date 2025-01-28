@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CRMClientsComponent } from './clients/clients.component';
 import { CRMDashboardComponent } from './dashboard/dashboard.component';
 import { CRMManagementComponent } from './management/management.component';
 import { CRMOrderListComponent } from './order-list/order-list.component';
 import { CRMProjectComponent } from './project/project.component';
+import { CRMClientsComponent } from './courses/clients.component';
 
 const routes: Routes = [
   {
