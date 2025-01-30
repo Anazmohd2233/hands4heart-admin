@@ -1,4 +1,4 @@
-<ng-template #addCourseModal let-modal>
+<ng-template #addCourseDetailsModal let-modal>
   <div class="modal-body">
     <form
       class="ps-3 pe-3"
@@ -158,7 +158,7 @@
         </select>
       </div>
 
-      <div formArrayName="course_objective">
+      <!-- <div formArrayName="course_objective">
         <div
           *ngFor="let objective of courseObjectives.controls; let i = index"
           [formGroupName]="i"
@@ -195,8 +195,8 @@
         >
           Add Objective
         </button>
-      </div>
-      <br /><br />
+      </div> -->
+      <!-- <br /><br /> -->
       <div class="row">
         <div class="col-12">
           <div class="card">
@@ -267,6 +267,7 @@
       <br /><br />
 
       <!-- Course doc upload -->
+
       <div class="row">
         <div class="col-12">
           <div class="card">
@@ -285,9 +286,8 @@
                   </ngx-dropzone-label>
                 </ngx-dropzone>
 
-                <!-- Preview -->
+                
                 <div class="dropzone-previews mt-3" id="file-previews">
-                  <!-- file preview template -->
                   <div id="uploadPreviewTemplate" *ngIf="docs">
                     <div class="card mt-1 mb-0 shadow-none border">
                       <div class="p-2">
@@ -302,7 +302,6 @@
                             <p class="mb-0">{{ getSize(docs) }}</p>
                           </div>
                           <div class="col-auto">
-                            <!-- Button -->
                             <a
                               href="javascript:void(0)"
                               class="btn btn-link btn-lg text-muted"
@@ -315,15 +314,11 @@
                       </div>
                     </div>
                   </div>
-                  <!-- end file preview template -->
                 </div>
               </form>
             </div>
-            <!-- end card-body -->
           </div>
-          <!-- end card-->
         </div>
-        <!-- end col-->
       </div>
 
       <div class="mb-3 text-center">
@@ -338,7 +333,7 @@
     <form
       class="ps-3 pe-3"
       [formGroup]="addCourseDetailsForm"
-      (ngSubmit)="createCourseDetails()"
+      (ngSubmit)="editDetails()"
     >
       <div class="mb-2">
         <label for="username" class="form-label">Course Name</label>
@@ -452,6 +447,10 @@
   </div>
 </ng-template>
 
+<ngb-alert #updateSuccessAlert type="success" *ngIf="show" (closed)="show=false">Course updated successfully
+</ngb-alert>
+
+
 <br />
 
 <div class="row card-container">
@@ -477,7 +476,7 @@
     <button
       type="button"
       class="btn btn-danger mb-2 me-2"
-      (click)="openAddDetails(addCourseModal)"
+      (click)="openAddDetails(addCourseDetailsModal)"
       style="margin-top: 10px"
     >
       Add Course Details
@@ -498,23 +497,23 @@
 <br />
 
 <br />
-<div class="row">
+<div class="row "  style>
   <!-- Loop through course details -->
 
-  <div class="col-lg-6" *ngFor="let detail of course?.details">
-    <div class="card">
+  <div class="col-lg-6 " *ngFor="let detail of course?.details">
+    <div class="card border border-dark mb-3" >
       <div
         class="d-flex align-items-center justify-content-between"
         style="padding-top: 4px"
       >
         <!-- Centered detail.name -->
-        <h5 class="card-title m-0 text-center flex-grow-1">
+        <h5 class="card-title m-0 text-center flex-grow-1 mt-2">
           {{ detail.name }}
         </h5>
 
         <!-- Button aligned to the end -->
         <button 
-        class="btn btn-danger ms-3"
+        class="btn btn-danger ms-3 me-2 mt-2"
         (click)="openEditDetails(editCourseDetailsModal,detail)"
 
         >

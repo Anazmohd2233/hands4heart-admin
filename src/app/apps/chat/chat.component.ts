@@ -11,6 +11,7 @@ import { Banner, BannerListResponse } from "./banner/banner.module";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { BannerService } from "src/app/core/service/banner.service";
 
 @Component({
   selector: "app-chat",
@@ -26,6 +27,8 @@ export class ChatComponent implements OnInit {
   authorization: any;
 
   courseId: string | null = null; // Class property to hold courseId
+  bannerId: string | null = null; // Class property to hold courseId
+
 
   files: File | null = null; // Single file object
 
@@ -38,7 +41,9 @@ export class ChatComponent implements OnInit {
     private http: HttpClient,
     private sanitizer: DomSanitizer,
     private modalService: NgbModal,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private bannerService: BannerService,
+
   ) {}
 
   ngOnInit(): void {
@@ -103,12 +108,11 @@ export class ChatComponent implements OnInit {
 
   openEdit(content: TemplateRef<NgbModal>, banner:Banner): void {
 
-    console.log('banner::::::::::::::::::::::',banner)
-
+    this.bannerId = banner.id;
     this.editBannerForm = this.fb.group({
       headline: [banner.headline, Validators.required],
       paragraph: [banner.paragraph, Validators.required],
-      status: [banner.status, Validators.required],
+      status: [banner.status === 1 ? "true" : "false", Validators.required],
       bannerType: [banner.bannerType, Validators.required],
     });
     this.modalService.open(content, { scrollable: true });
@@ -125,6 +129,12 @@ export class ChatComponent implements OnInit {
 
   resetForm() {
     this.addBannerForm.reset({
+      headline: "",
+      paragraph: "",
+      status: "",
+      bannerType: "",
+    });
+    this.editBannerForm.reset({
       headline: "",
       paragraph: "",
       status: "",
@@ -153,6 +163,7 @@ export class ChatComponent implements OnInit {
       encodeURI(URL.createObjectURL(f))
     );
   }
+  
 
   createBanner(): void {
     if (this.addBannerForm.valid) {
@@ -182,5 +193,53 @@ export class ChatComponent implements OnInit {
           this.resetForm();
         });
     }
+  }
+
+  
+  updateBanner(): void {
+    if (this.editBannerForm.valid) {
+      const formData = new FormData();
+
+      // Add scalar values
+      formData.append("headline", this.editBannerForm.value.headline);
+      formData.append("paragraph", this.editBannerForm.value.paragraph);
+      formData.append("status", this.editBannerForm.value.status);
+      formData.append("bannerType", this.editBannerForm.value.bannerType);
+
+
+      if(this.courseId){
+        formData.append("courseId", this.courseId);
+      }
+
+      if(this.bannerId){
+        formData.append("id", this.bannerId);
+      }
+
+      // Add course_objective as a stringified JSON
+
+      if (this.files) {
+        formData.append("img", this.files); // Single file for course image
+      }
+
+    this.bannerService.updateBanner(formData).subscribe({
+      next: (response) => {
+        console.log("response of update banner - ", response);
+        if (response.success) {
+          this.resetForm();
+          this.files = null;
+         
+        } else {
+          console.error("Failed to update banner:", response.message);
+        }
+      },
+      error: (error) => {
+        console.error("Error updating banner:", error);
+      },
+      complete: () => {
+        this._fetchData();
+        console.log("Banner updated successfully!...");
+      },
+    });
+  }
   }
 }
