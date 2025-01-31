@@ -5,6 +5,8 @@ export const MENU: MenuItem[] = [
     { key: 'navigation', label: 'Navigation', isTitle: true },
     { key: 'users', label: 'Users', isTitle: false, icon: 'uil-briefcase', link: 'apps/user-list' },
     { key: 'courses', label: 'Course', isTitle: false, icon: 'uil-briefcase', link: 'apps/courses' },
+    { key: 'quiz', label: 'Quiz', isTitle: false, icon: 'uil-copy-alt', link: 'apps/quiz' },
+
     { key: 'banner', label: 'Banner', isTitle: false, icon: 'uil-copy-alt', link: 'apps/banner' },
 
     {

@@ -136,6 +136,8 @@ export class AnalyticsComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
+
+
   openEditCourse(
     content: TemplateRef<NgbModal>,
     courseData: CourseDataById

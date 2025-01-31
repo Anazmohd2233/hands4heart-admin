@@ -23,9 +23,6 @@ export class ChatComponent implements OnInit {
 
   pageTitle: BreadcrumbItem[] = [];
 
-  apiUrl = "https://lms.zaap.life/admin/banner/list/1";
-  authorization: any;
-
   courseId: string | null = null; // Class property to hold courseId
   bannerId: string | null = null; // Class property to hold courseId
 
@@ -54,7 +51,6 @@ export class ChatComponent implements OnInit {
 
     this.courseId = localStorage.getItem("courseId");
 
-    this.authorization = localStorage.getItem("Authorization");
 
     this._fetchData();
 
@@ -68,23 +64,16 @@ export class ChatComponent implements OnInit {
   }
 
   private _fetchData(): void {
-    const headers = new HttpHeaders({
-      Authorization: this.authorization,
-    });
 
-    this.http.get<BannerListResponse>(this.apiUrl, { headers }).subscribe(
-      (response) => {
-        if (response.success) {
-          this.banners = response.data.banner;
-          console.log("Courses loaded:", this.banners);
-        } else {
-          console.error("Failed to load courses:", response.message);
-        }
+    this.bannerService.getBanners().subscribe({
+      next: (response) => {
+        console.log("Banners:", response);
+        this.banners = response.data.banner;
       },
-      (error) => {
-        console.error("API error:", error);
-      }
-    );
+      error: (error) => {
+        console.error("Error fetching banners:", error);
+      },
+    });
   }
   getEmbedUrl(videoUrl: string): SafeResourceUrl {
     const videoId = this.getYouTubeVideoId(videoUrl);
@@ -181,17 +170,28 @@ export class ChatComponent implements OnInit {
         formData.append("img", this.files); // Single file for course image
       }
 
-      // Send POST request
-      this.http
-        .post("https://lms.zaap.life/admin/banner/create", formData, {
-          headers: {
-            Authorization: this.authorization,
+      
+
+        this.bannerService.createBanner(formData).subscribe({
+          next: (response) => {
+            console.log("response of create banner - ", response);
+            if (response.success) {
+              this.resetForm();
+              this.files = null;
+             
+            } else {
+              console.error("Failed to create banner:", response.message);
+            }
           },
-        })
-        .subscribe((response) => {
-          console.log("Banner Added successfully", response);
-          this.resetForm();
+          error: (error) => {
+            console.error("Error creating banner:", error);
+          },
+          complete: () => {
+            this._fetchData();
+            console.log("Banner created successfully!...");
+          },
         });
+
     }
   }
 

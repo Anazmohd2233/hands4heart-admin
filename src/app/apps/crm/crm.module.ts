@@ -28,6 +28,8 @@ import { ProjectWidgetComponent } from './management/project-widget/project-widg
 import { CalendarComponent } from './management/calendar/calendar.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CRMClientsComponent } from './courses/clients.component';
+import { QuizComponent } from './quiz/quiz.component';
+
 
 
 
@@ -52,6 +54,7 @@ import { CRMClientsComponent } from './courses/clients.component';
     TaskStatusComponent,
     ProjectWidgetComponent,
     CalendarComponent,
+    QuizComponent,
   ],
   imports: [
     CommonModule,
