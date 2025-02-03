@@ -6,6 +6,7 @@ import { CRMOrderListComponent } from './order-list/order-list.component';
 import { CRMProjectComponent } from './project/project.component';
 import { CRMClientsComponent } from './courses/clients.component';
 import { QuizComponent } from './quiz/quiz.component';
+import { AnswersComponent } from './quiz_answers/answers/answers.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
   {
     path: 'quiz',
     component: QuizComponent
+  },
+  {
+    path: 'quiz/question',
+    component: AnswersComponent
   },
   {
     path: 'project',

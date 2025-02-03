@@ -156,6 +156,7 @@ courseForm!: FormGroup;
             console.log("Quiz created successfully!...");
           },
         });
+        
     }
   }
   resetForm() {
@@ -167,10 +168,12 @@ courseForm!: FormGroup;
 
   }
 
-  goToQuestions(quiz: any): void {
-   console.log('course question add:::::;;;',quiz)
-    // localStorage.setItem("courseId", course.id); // Save URLs only
-    // this.router.navigate([`courses/details/${course.id}`]);
+  goToQuestions(quiz: AdminItem): void {
+   console.log('quiz id and adding loc:::::;;;',quiz.id)
+  localStorage.setItem('quiz_id',quiz.id)
+  localStorage.setItem('quiz_title',quiz.title)
+
+    this.router.navigate(['apps/quiz/question']); // ✅ Works correctly in feature modules
   }
 
   fetchCourseDetails(event: Event) {

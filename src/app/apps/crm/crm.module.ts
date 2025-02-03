@@ -29,6 +29,7 @@ import { CalendarComponent } from './management/calendar/calendar.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CRMClientsComponent } from './courses/clients.component';
 import { QuizComponent } from './quiz/quiz.component';
+import { AnswersComponent } from './quiz_answers/answers/answers.component';
 
 
 
@@ -55,6 +56,7 @@ import { QuizComponent } from './quiz/quiz.component';
     ProjectWidgetComponent,
     CalendarComponent,
     QuizComponent,
+    AnswersComponent,
   ],
   imports: [
     CommonModule,
