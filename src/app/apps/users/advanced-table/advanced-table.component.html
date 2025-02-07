@@ -83,6 +83,18 @@
                           <option value="unpaid">Unpaid</option>
                         </select>
                       </ng-container>
+
+                      <ng-container *ngIf="column.name === 'payment'">
+                        <select
+                          class="form-control custom-select"
+                          [(ngModel)]="record.cert_paymentStatus"
+                          (change)="updateCertificatePayment(record, record.cert_paymentStatus)"
+                        >
+                          <!-- <option value="" disabled>Select Status</option> -->
+                          <option value="paid">Paid</option>
+                          <option value="unpaid">Unpaid</option>
+                        </select>
+                      </ng-container>
                    
                 </td>
             </tr>

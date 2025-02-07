@@ -2,7 +2,6 @@ import { Component, ComponentFactoryResolver, EventEmitter, Input, OnInit, Outpu
 import { DomSanitizer } from '@angular/platform-browser';
 
 
-import { tableData } from './data';
 import { BreadcrumbItem } from 'src/app/shared/page-title/page-title.model';
 import { AdvancedTable } from './advanced.model';
 import { Column } from '../advanced-table/advanced-table.component';
@@ -24,73 +23,7 @@ export class UserListComponent implements OnInit {
 
    adminList: Admin[] = [];
 
-  //  records: Admin[] = [
-  //   {
-  //     id: '1',
-  //     name: 'John Doe',
-  //     phone: '123-456-7890',
-  //     status: 1,
-  //     email: 'john.doe@example.com',
-  //     is_skilled_user: 1,
-  //     address: '123 Main Street, City, Country',
-  //     gender: 'Male',
-  //     ratings: 4.5,
-  //     language: 'English',
-  //     date_of_birth: '1985-06-15',
-  //     bio: 'Experienced professional with over 10 years in tech.',
-  //     createdAt: '2024-01-01T10:00:00Z',
-  //     updatedAt: '2024-01-20T12:30:00Z',
-  //   },
-  //   {
-  //     id: '2',
-  //     name: 'Jane Smith',
-  //     phone: '987-654-3210',
-  //     status: 0,
-  //     email: 'jane.smith@example.com',
-  //     is_skilled_user: 0,
-  //     address: '456 Oak Road, Village, Country',
-  //     gender: 'Female',
-  //     ratings: 3.8,
-  //     language: 'Spanish',
-  //     date_of_birth: '1990-04-22',
-  //     bio: 'Junior developer passionate about learning and growing.',
-  //     createdAt: '2024-01-05T11:15:00Z',
-  //     updatedAt: '2024-01-22T09:45:00Z',
-  //   },
-  //   {
-  //     id: '3',
-  //     name: 'Sam Wilson',
-  //     phone: '555-123-4567',
-  //     status: 1,
-  //     email: 'sam.wilson@example.com',
-  //     is_skilled_user: 1,
-  //     address: '789 Pine Avenue, Town, Country',
-  //     gender: 'Male',
-  //     ratings: 4.8,
-  //     language: 'English, French',
-  //     date_of_birth: '1992-11-10',
-  //     bio: 'Full-stack developer with a passion for clean code and efficient solutions.',
-  //     createdAt: '2024-01-10T14:20:00Z',
-  //     updatedAt: '2024-01-21T10:50:00Z',
-  //   },
-  //   {
-  //     id: '4',
-  //     name: 'Emily Davis',
-  //     phone: '321-654-9870',
-  //     status: 1,
-  //     email: 'emily.davis@example.com',
-  //     is_skilled_user: 1,
-  //     address: '101 Maple Lane, City, Country',
-  //     gender: 'Female',
-  //     ratings: 4.2,
-  //     language: 'German',
-  //     date_of_birth: '1988-12-05',
-  //     bio: 'Project manager with experience in software development and team leadership.',
-  //     createdAt: '2024-01-15T08:30:00Z',
-  //     updatedAt: '2024-01-19T16:00:00Z',
-  //   }
-  // ];
-  
+ 
   totalCount: number = 0;
   limit: number = 0;
 

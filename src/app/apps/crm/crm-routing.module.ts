@@ -7,6 +7,7 @@ import { CRMProjectComponent } from './project/project.component';
 import { CRMClientsComponent } from './courses/clients.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { AnswersComponent } from './quiz_answers/answers/answers.component';
+import { CertificateComponent } from './certificate/certificate/certificate.component';
 
 const routes: Routes = [
   {
@@ -36,7 +37,12 @@ const routes: Routes = [
   {
     path: 'management',
     component: CRMManagementComponent
+  },  
+  {
+    path: 'certificate',
+    component: CertificateComponent
   }
+
 ];
 
 @NgModule({

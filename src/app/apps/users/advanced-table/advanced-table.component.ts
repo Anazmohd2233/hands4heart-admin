@@ -5,6 +5,8 @@ import { NgbSortableHeaderDirective, SortEvent } from './sortable.directive';
 import { Router } from '@angular/router';
 import { EnrolledCourse } from '../models/mode-user-courses';
 import { UserProfileService } from 'src/app/core/service/user.service';
+import { CertificateListItem } from '../../crm/certificate/certificate/fetch_cert_model';
+import { CertificateService } from 'src/app/core/service/certificate.service';
 
 
 export interface Column {
@@ -54,6 +56,7 @@ export class AdvancedTableComponent implements OnInit, AfterViewChecked {
     private componentFactoryResolver: ComponentFactoryResolver,
     private router: Router,
     private userService: UserProfileService,
+    private certificateService: CertificateService,
   ) {}
 
   ngAfterViewChecked(): void {
@@ -210,6 +213,43 @@ export class AdvancedTableComponent implements OnInit, AfterViewChecked {
     });
     
   }
+
+  
+  updateCertificatePayment(record: CertificateListItem, status: string): void {
+    console.log(`Updating payment status of certicate for ${record.user_name}:`, status);
+
+    const formData = new FormData();
+    formData.append("certId", record.cert_id);
+    formData.append("payment_type", status);
+  
+    // Perform additional logic, e.g., API call to update the backend
+    this.updateCertificate(formData);
+  }
+  
+  updateCertificate(formData:any): void {
+    // this.records = tableData;
+
+
+    this.certificateService.updateCertificateStatus(formData).subscribe({
+      next: (response) => 
+        {
+        if (response.success) {
+          console.log('certificate payment status updated succesfully')
+        } else {
+          console.error('Failed to update certificate payment status:');
+        }
+      },
+      error: (error) => {
+        console.error('Error update certificate payment status:', error);
+      },
+      complete: () => {
+        // Optionally handle the completion logic here
+        console.log('Certificate payment status updated successfully');
+      }
+    });
+    
+  }
+  
   
 
 }
