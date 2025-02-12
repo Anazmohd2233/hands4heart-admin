@@ -10,8 +10,8 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DomSanitizer } from "@angular/platform-browser";
 import { Router } from "@angular/router";
-import { CourseService } from "../services/course.service";
 import { Course, CourseListResponse } from "../../chat/banner/banner.module";
+import { CourseService } from "src/app/core/service/course.service";
 
 @Component({
   selector: "app-crm-clients",
@@ -22,7 +22,7 @@ export class CRMClientsComponent implements OnInit {
   addCourseForm!: FormGroup;
 
   courses: Course[] = [];
-  apiUrl = "https://lms.zaap.life/admin/course/list/1";
+  page:number = 1;
 
   pageTitle: BreadcrumbItem[] = [];
   // files: File[] = [];
@@ -64,23 +64,26 @@ export class CRMClientsComponent implements OnInit {
    * fetches order list
    */
   private _fetchData(): void {
-    const headers = new HttpHeaders({
-      Authorization: this.authorization,
-    });
+  
 
-    this.http.get<CourseListResponse>(this.apiUrl, { headers }).subscribe(
-      (response) => {
+
+    this.courseService.getCourses(this.page).subscribe({
+      next: (response) => {
         if (response.success) {
           this.courses = response.data.courses;
+
           console.log("Courses loaded:", this.courses);
         } else {
           console.error("Failed to load courses:", response.message);
         }
       },
-      (error) => {
-        console.error("API error:", error);
+      error: (error) => {
+          console.error("API error:", error);
+      },
+      complete: () => {
+        console.log('Admin list fetch completed.');
       }
-    );
+    });
   }
 
   public user = {

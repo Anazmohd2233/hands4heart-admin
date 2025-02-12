@@ -5,7 +5,7 @@
                 <h4 class="header-title">Users</h4>
                 
                 <!-- table start -->
-                <app-advanced-table-users [tableData]="records" [columns]="columns" [pagination]="true"
+                <app-advanced-table-users [tableData]="records" [columns]="columns" [pagination]="true" [tableName] = "tableName"
                     [pageSizeOptions]="pageSizeOptions" [hasRowSelection]="true" [isSearchable]="true"
                     (search)="searchData($event)" [isSortable]="true" (sort)="onSort($event)"
                     tableClasses="table-striped">

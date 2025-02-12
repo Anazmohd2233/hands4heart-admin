@@ -8,6 +8,7 @@ import { CRMClientsComponent } from './courses/clients.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { AnswersComponent } from './quiz_answers/answers/answers.component';
 import { CertificateComponent } from './certificate/certificate/certificate.component';
+import { EventsComponent } from './events/events.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,11 @@ const routes: Routes = [
   {
     path: 'certificate',
     component: CertificateComponent
+  }
+  ,  
+  {
+    path: 'events',
+    component: EventsComponent
   }
 
 ];

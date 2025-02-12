@@ -27,6 +27,9 @@ export class UserListComponent implements OnInit {
   totalCount: number = 0;
   limit: number = 0;
 
+  page: number = 1;
+  tableName:string="userList";
+
   constructor(private userService: UserProfileService) {}
   
   ngOnInit(): void {
@@ -42,7 +45,7 @@ export class UserListComponent implements OnInit {
     // this.records = tableData;
 
 
-    this.userService.getUserList(1).subscribe({
+    this.userService.getUserList(this.page).subscribe({
       next: (response) => 
         {console.log('response of user list - ',response)
         if (response.success) {

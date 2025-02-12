@@ -22,9 +22,9 @@ export class UserProfileService {
     }
 
 
-      getUserList(id: number) {
+      getUserList(page: number) {
 
-        const apiUrl = `${this.baseUrl}/admin/user-list/${id}`;
+        const apiUrl = `${this.baseUrl}/admin/user-list/${page}`;
         // console.log('apiurl for listing users', apiUrl)
         this.authorization = localStorage.getItem("Authorization");
 

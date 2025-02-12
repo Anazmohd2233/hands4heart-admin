@@ -10,10 +10,10 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { DomSanitizer } from "@angular/platform-browser";
 import { Router } from "@angular/router";
-import { CourseService } from "../services/course.service";
 import { Course, CourseListResponse } from "../../chat/banner/banner.module";
 import { QuizService } from "src/app/core/service/quiz.service";
 import { AdminItem } from "./model";
+import { CourseService } from "src/app/core/service/course.service";
 
 @Component({
   selector: 'app-quiz',
@@ -31,9 +31,7 @@ courseForm!: FormGroup;
   courseName: string | null = null;
 
   selectedCourse:any;
-
-
-  apiUrl = "https://lms.zaap.life/admin/course/list/1";
+  page:number=1;
 
   pageTitle: BreadcrumbItem[] = [];
 
@@ -77,25 +75,24 @@ courseForm!: FormGroup;
    * fetches order list
    */
   private _fetchData(): void {
-    const headers = new HttpHeaders({
-      Authorization: this.authorization,
-    });
 
-    this.http.get<CourseListResponse>(this.apiUrl, { headers }).subscribe(
-      (response) => {
+    this.courseService.getCourses(this.page).subscribe({
+      next: (response) => {
         if (response.success) {
           this.courses = response.data.courses;
           this.selectedCourse = this.courses.length ? this.courses[0].id : ''; // Set first course as default
-
           console.log("Courses loaded:", this.courses);
         } else {
           console.error("Failed to load courses:", response.message);
         }
       },
-      (error) => {
-        console.error("API error:", error);
+      error: (error) => {
+          console.error("API error:", error);
+      },
+      complete: () => {
+        console.log('Admin list fetch completed.');
       }
-    );
+    });
   }
 
   private fetchData(): void {

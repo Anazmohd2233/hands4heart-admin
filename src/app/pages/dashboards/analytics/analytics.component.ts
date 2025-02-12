@@ -331,6 +331,10 @@ export class AnalyticsComponent implements OnInit {
       if (this.files) {
         formData.append("course_img", this.files); // Single file for course image
       }
+      
+      if (this.docs) {
+        formData.append("course_document", this.docs); // Single file for course image
+      }
 
       // Send POST request
 

@@ -53,7 +53,10 @@
 
         </thead>
         <tbody>
-            <tr *ngFor="let record of tableData | slice: (service.page-1) * service.pageSize : service.page * service.pageSize;let i=index"
+            <!-- <tr *ngFor="let record of tableData | slice: (service.page-1) * service.pageSize : service.page * service.pageSize;let i=index"
+                [class.selected]="isSelected[i+((service.page-1) * service.pageSize)]"> -->
+
+                <tr *ngFor="let record of tableData ;let i=index"
                 [class.selected]="isSelected[i+((service.page-1) * service.pageSize)]">
 
                 <td *ngIf="hasRowSelection">

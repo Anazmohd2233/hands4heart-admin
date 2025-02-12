@@ -22,7 +22,7 @@ export class AdvancedTableServices {
   // tslint:disable-next-line: variable-name
   private _state: State = {
     page: 1,
-    pageSize: 10,
+    pageSize: 20,
     searchTerm: '',
     sortColumn: '',
     sortDirection: '',

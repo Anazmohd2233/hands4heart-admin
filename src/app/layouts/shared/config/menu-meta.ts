@@ -9,6 +9,7 @@ export const MENU: MenuItem[] = [
 
     { key: 'banner', label: 'Banner', isTitle: false, icon: 'uil-copy-alt', link: 'apps/banner' },
     { key: 'cert', label: 'Certificate', isTitle: false, icon: 'uil-copy-alt', link: 'apps/certificate' },
+    { key: 'event', label: 'Events', isTitle: false, icon: 'uil-copy-alt', link: 'apps/events' },
 
 
     // {

@@ -25,7 +25,8 @@ export class CertificateComponent implements OnInit {
   
      certificateLists: CertificateListItem[] = [];
   
-    
+     tableName:string="certificateTable";
+
     totalCount: number = 0;
     limit: number = 0;
   

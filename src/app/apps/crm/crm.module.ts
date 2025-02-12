@@ -40,6 +40,7 @@ import { AnswersComponent } from "./quiz_answers/answers/answers.component";
 import { CertificateComponent } from "./certificate/certificate/certificate.component";
 import { AdvancedTableModule } from "../users/advanced-table/advanced-table.module";
 import { AdvancedRoutingModule } from "src/app/pages/tables/advanced/advanced-routing.module";
+import { EventsComponent } from './events/events.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { AdvancedRoutingModule } from "src/app/pages/tables/advanced/advanced-ro
     QuizComponent,
     AnswersComponent,
     CertificateComponent,
+    EventsComponent,
   ],
   imports: [
     CommonModule,
