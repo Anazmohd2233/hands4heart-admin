@@ -59,6 +59,8 @@ export class AnalyticsComponent implements OnInit {
   imageUrl: string | null = null; // For existing image URL
 
   docs: File | null = null;
+  video: File | null = null; // Single file object
+
 
   courseId: string | null = null; // Class property to hold courseId
   detailsId: string | null = null; // Add this property at the top of your component
@@ -295,6 +297,10 @@ export class AnalyticsComponent implements OnInit {
         formData.append("course_details_img", this.files); // Single file for course image
       }
 
+      if (this.video) {
+        formData.append("course_details_video", this.video); // Single file for course image
+      }
+
   
       this.courseService.createCourseDetails(formData).subscribe({
         next: (response) => {
@@ -414,4 +420,15 @@ export class AnalyticsComponent implements OnInit {
       });
     }
   }
+
+
+  onRemoveVideo(event: any) {
+    this.video = null;
+  }
+  onSelectVideo(event: any): void {
+    if (event.addedFiles && event.addedFiles.length > 0) {
+      this.video = event.addedFiles[0]; // Store only the first selected file
+    }
+  }
+
 }
