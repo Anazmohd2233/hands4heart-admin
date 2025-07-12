@@ -39,6 +39,20 @@ export class CourseService {
     return this.http.post<any>(apiUrl, formdata, { headers });
   }
 
+
+    createCourse(formdata: any) {
+    const apiUrl = `${this.baseUrl}/admin/course/create`;
+    // console.log('apiurl for listing users', apiUrl)
+    this.authorization = localStorage.getItem("Authorization");
+
+    const headers = new HttpHeaders({
+      Authorization: this.authorization,
+    });
+
+    // return this.http.get<UserResponse>(`/admin/user-list/${id}`);
+    return this.http.post<any>(apiUrl, formdata, { headers });
+  }
+
   updateCourseDetails(formdata: any) {
     const apiUrl = `${this.baseUrl}/admin/course/update_details`;
     // console.log('apiurl for listing users', apiUrl)

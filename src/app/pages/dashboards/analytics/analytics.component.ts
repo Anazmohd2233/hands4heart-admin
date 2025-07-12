@@ -61,7 +61,6 @@ export class AnalyticsComponent implements OnInit {
   docs: File | null = null;
   video: File | null = null; // Single file object
 
-
   courseId: string | null = null; // Class property to hold courseId
   detailsId: string | null = null; // Add this property at the top of your component
 
@@ -82,6 +81,11 @@ export class AnalyticsComponent implements OnInit {
       name: ["", Validators.required],
       video_url: ["", Validators.required],
       status: ["", Validators.required],
+      amount: ["", Validators.required],
+
+      certificate_amount: ["", Validators.required],
+
+      tax_amount: ["", Validators.required],
     });
 
     this.addObjective();
@@ -107,8 +111,6 @@ export class AnalyticsComponent implements OnInit {
     this.courseObjectives.removeAt(index);
   }
 
-
-
   fetchCourseDetails(courseId: any): void {
     this.courseService.fetchCourseDetails(courseId).subscribe({
       next: (response) => {
@@ -120,7 +122,6 @@ export class AnalyticsComponent implements OnInit {
       },
     });
   }
-  
 
   getEmbedUrl(videoUrl: string): SafeResourceUrl {
     const videoId = this.getYouTubeVideoId(videoUrl);
@@ -138,24 +139,23 @@ export class AnalyticsComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-
-
-  openEditCourse(
-    content: TemplateRef<NgbModal>,
-    courseData: CourseDataById
-  ): void {
-    
+  openEditCourse(content: TemplateRef<NgbModal>, courseData: any): void {
     this.editCourseForm = this.fb.group({
       name: [courseData.name, Validators.required],
       description: [courseData.description, Validators.required],
+
+      amount: [courseData.amount, Validators.required],
+
+      certificate_amount: [courseData.certificate_amount, Validators.required],
+
+      tax_amount: [courseData.tax_amount, Validators.required],
+
       course_objective: this.fb.array([]), // FormArray for course objectives
       status: [courseData.status === 1 ? "true" : "false", Validators.required],
     });
 
-
     this.modalService.open(content, { scrollable: true });
   }
-
 
   // convertUrlToFile(imageUrl: string, fileName: string): Promise<File> {
   //   return fetch(imageUrl)
@@ -164,19 +164,19 @@ export class AnalyticsComponent implements OnInit {
   //         throw new Error(`HTTP error! Status: ${response.status}`);
   //       }
   //       const blob = await response.blob();
-  
+
   //       // Determine file extension from MIME type
   //       const mimeType = blob.type; // Get MIME type (e.g., "image/png", "image/jpeg")
   //       const extension = mimeType.split("/")[1]; // Extract extension (png, jpg, etc.)
   //       const validExtensions = ["png", "jpeg", "jpg", "gif", "webp"]; // Add more if needed
-  
+
   //       if (!validExtensions.includes(extension)) {
   //         throw new Error(`Unsupported file format: ${mimeType}`);
   //       }
-  
+
   //       // Append correct file extension to the file name
   //       const finalFileName = fileName.includes(".") ? fileName : `${fileName}.${extension}`;
-  
+
   //       // Create file
   //       const file = new File([blob], finalFileName, { type: mimeType });
   //       this.files = file; // Store file
@@ -187,7 +187,6 @@ export class AnalyticsComponent implements OnInit {
   //       return null as any;
   //     });
   // }
-  
 
   openEditDetails(
     content: TemplateRef<NgbModal>,
@@ -200,7 +199,6 @@ export class AnalyticsComponent implements OnInit {
       video_url: [details.video_url, Validators.required],
       status: [details.status === 1 ? "true" : "false", Validators.required],
     });
-
 
     this.modalService.open(content, { scrollable: true });
   }
@@ -219,6 +217,9 @@ export class AnalyticsComponent implements OnInit {
       name: "",
       description: "",
       status: "",
+      tax_amount: "",
+      amount: "",
+      certificate_amount: "",
       // course_objective: "",
     });
     this.files = null;
@@ -301,7 +302,6 @@ export class AnalyticsComponent implements OnInit {
         formData.append("course_details_video", this.video); // Single file for course image
       }
 
-  
       this.courseService.createCourseDetails(formData).subscribe({
         next: (response) => {
           console.log("response of adding course details - ", response);
@@ -330,6 +330,13 @@ export class AnalyticsComponent implements OnInit {
       formData.append("name", this.editCourseForm.value.name);
       formData.append("description", this.editCourseForm.value.description);
       formData.append("status", this.editCourseForm.value.status);
+
+      formData.append("amount", this.editCourseForm.value.status);
+
+      formData.append("certificate_amount", this.editCourseForm.value.status);
+
+      formData.append("tax_amount", this.editCourseForm.value.status);
+
       if (this.courseId) {
         formData.append("id", this.courseId);
       }
@@ -337,7 +344,7 @@ export class AnalyticsComponent implements OnInit {
       if (this.files) {
         formData.append("course_img", this.files); // Single file for course image
       }
-      
+
       if (this.docs) {
         formData.append("course_document", this.docs); // Single file for course image
       }
@@ -358,7 +365,6 @@ export class AnalyticsComponent implements OnInit {
 
             this.resetForm();
             this.files = null;
-
           } else {
             console.error("Failed to fetch data:", response.message);
           }
@@ -405,7 +411,6 @@ export class AnalyticsComponent implements OnInit {
           if (response.success) {
             this.resetForm();
             this.files = null;
-           
           } else {
             console.error("Failed to update details:", response.message);
           }
@@ -421,7 +426,6 @@ export class AnalyticsComponent implements OnInit {
     }
   }
 
-
   onRemoveVideo(event: any) {
     this.video = null;
   }
@@ -430,5 +434,4 @@ export class AnalyticsComponent implements OnInit {
       this.video = event.addedFiles[0]; // Store only the first selected file
     }
   }
-
 }

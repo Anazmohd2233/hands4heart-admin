@@ -22,7 +22,7 @@ export class CRMClientsComponent implements OnInit {
   addCourseForm!: FormGroup;
 
   courses: Course[] = [];
-  page:number = 1;
+  page: number = 1;
 
   pageTitle: BreadcrumbItem[] = [];
   // files: File[] = [];
@@ -55,6 +55,11 @@ export class CRMClientsComponent implements OnInit {
       description: ["", Validators.required],
       course_objective: this.fb.array([]), // FormArray for course objectives
       status: ["", Validators.required],
+      amount: ["", Validators.required],
+
+      certificate_amount: ["", Validators.required],
+
+      tax_amount: ["", Validators.required],
     });
 
     this.addObjective();
@@ -64,9 +69,6 @@ export class CRMClientsComponent implements OnInit {
    * fetches order list
    */
   private _fetchData(): void {
-  
-
-
     this.courseService.getCourses(this.page).subscribe({
       next: (response) => {
         if (response.success) {
@@ -78,11 +80,11 @@ export class CRMClientsComponent implements OnInit {
         }
       },
       error: (error) => {
-          console.error("API error:", error);
+        console.error("API error:", error);
       },
       complete: () => {
-        console.log('Admin list fetch completed.');
-      }
+        console.log("Admin list fetch completed.");
+      },
     });
   }
 
@@ -124,6 +126,15 @@ export class CRMClientsComponent implements OnInit {
       formData.append("description", this.addCourseForm.value.description);
       formData.append("status", this.addCourseForm.value.status);
 
+      formData.append("amount", this.addCourseForm.value.amount);
+
+      formData.append(
+        "certificate_amount",
+        this.addCourseForm.value.certificate_amount
+      );
+
+      formData.append("tax_amount", this.addCourseForm.value.tax_amount);
+
       // Add course_objective as a stringified JSON
       formData.append(
         "course_objective",
@@ -137,18 +148,20 @@ export class CRMClientsComponent implements OnInit {
       if (this.docs) {
         formData.append("course_document", this.docs); // Single file for course document
       }
-      // Send POST request
-      this.http
-        .post("https://lms.zaap.life/admin/course/create", formData, {
-          headers: {
-            Authorization:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMSIsImlhdCI6MTczNzI4MzA5Nn0.OPDfT5xYyL09x2DYr2iVmldzHhq4OCsTm4RWE8wW12w",
-          },
-        })
-        .subscribe((response) => {
-          console.log("Course created successfully", response);
-          this.resetForm();
-        });
+
+      this.courseService.createCourse(formData).subscribe({
+        next: (response) => {
+          if (response.success) {
+            console.log("Course created successfully", response);
+            this.resetForm();
+          } else {
+            console.error("Failed to fetch data:", response.message);
+          }
+        },
+        error: (error) => {
+          console.error("Error fetching create  course:", error);
+        },
+      });
     }
   }
   resetForm() {
@@ -157,6 +170,12 @@ export class CRMClientsComponent implements OnInit {
       description: "",
       course_objective: [],
       status: "",
+
+      amount: "",
+
+      certificate_amount: "",
+
+      tax_amount: "",
     });
     this.files = null;
     this.docs = null;
