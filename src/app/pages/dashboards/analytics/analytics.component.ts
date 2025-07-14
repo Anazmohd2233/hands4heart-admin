@@ -79,13 +79,13 @@ export class AnalyticsComponent implements OnInit {
 
     this.addCourseDetailsForm = this.fb.group({
       name: ["", Validators.required],
-      video_url: ["", Validators.required],
+      video_url: [""],
       status: ["", Validators.required],
-      amount: ["", Validators.required],
+      amount: [""],
 
-      certificate_amount: ["", Validators.required],
+      certificate_amount: [""],
 
-      tax_amount: ["", Validators.required],
+      tax_amount: [""],
     });
 
     this.addObjective();
