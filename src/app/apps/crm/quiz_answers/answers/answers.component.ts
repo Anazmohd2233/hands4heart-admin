@@ -6,7 +6,7 @@ import { BreadcrumbItem } from "src/app/shared/page-title/page-title.model";
 // data
 
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import {
   FormArray,
   FormBuilder,
@@ -33,6 +33,7 @@ import { Question } from "./model";
 })
 export class AnswersComponent implements OnInit {
 
+  private modalRef: NgbModalRef | null = null;
 
   addQuestionsForm!: FormGroup;
 
@@ -97,7 +98,7 @@ export class AnswersComponent implements OnInit {
   }
 
   open(content: TemplateRef<NgbModal>): void {
-    this.modalService.open(content, { scrollable: true });
+        this.modalRef = this.modalService.open(content, { scrollable: true });
   }
 
   createQuestionGroup(): FormGroup {
@@ -154,6 +155,12 @@ export class AnswersComponent implements OnInit {
           console.log("response of create Question - ", response);
           if (response.success) {
              this.resetForm();
+
+               // ✅ Close the modal
+      if (this.modalRef) {
+        this.modalRef.close();
+        this.modalRef = null;
+      }
            
           } else {
             console.error("Failed to create Question:", response.success);
